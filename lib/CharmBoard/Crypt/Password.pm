@@ -3,7 +3,7 @@ use Authen::Passphrase::Argon2;
 
 use Exporter qw(import);
 
-our @EXPORT = qw/ pass_gen /;
+our @EXPORT = qw(pass_gen);
 
 sub pass_gen ($) {
   my $argon2 = Authen::Passphrase::Argon2->new(

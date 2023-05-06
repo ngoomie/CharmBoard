@@ -32,8 +32,8 @@ sub registration_do ($app) {
 
   # check to make sure username and/or email isn't already in use;
   # if not, continue with registration
-  my $userCheck  = $app->schema->resultset('User')->search({username => $username})->single;
-  my $emailCheck = $app->schema->resultset('User')->search({email => $email})->single;
+  my $userCheck  = $app->schema->resultset('Users')->search({username => $username})->single;
+  my $emailCheck = $app->schema->resultset('Users')->search({email => $email})->single;
   if ( $userCheck || $emailCheck ) {
     if ( $userCheck && $emailCheck ) {
       # notify user that username and email are both already being used
@@ -51,7 +51,7 @@ sub registration_do ($app) {
   } else {
     $password = $app->pepper . ':' . $password;
     my ($hash, $salt) = pass_gen($password);
-    $app->schema->resultset('User')->create({
+    $app->schema->resultset('Users')->create({
       username    => $username,
       email       => $email,
       password    => $hash,

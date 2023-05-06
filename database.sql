@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on Fri. May 5 22:21:17 2023
+-- File generated with SQLiteStudio v3.4.4 on Sat. May 6 00:01:26 2023
 --
 -- Text encoding used: UTF-8
 --
@@ -8,12 +8,7 @@ BEGIN TRANSACTION;
 
 -- Table: categories
 DROP TABLE IF EXISTS categories;
-CREATE TABLE IF NOT EXISTS "categories" (
-	"cat_id"	INTEGER NOT NULL UNIQUE,
-	"cat_name"	TEXT,
-	"cat_desc"	TEXT,
-	PRIMARY KEY("cat_id" AUTOINCREMENT)
-);
+CREATE TABLE IF NOT EXISTS categories (cat_id INTEGER NOT NULL UNIQUE, cat_name TEXT, PRIMARY KEY (cat_id AUTOINCREMENT));
 
 -- Table: posts
 DROP TABLE IF EXISTS posts;
@@ -36,9 +31,13 @@ CREATE TABLE IF NOT EXISTS "session" (
 	PRIMARY KEY("user_id")
 );
 
+-- Table: subforums
+DROP TABLE IF EXISTS subforums;
+CREATE TABLE IF NOT EXISTS subforums (subf_id INTEGER PRIMARY KEY UNIQUE NOT NULL, subf_cat INTEGER REFERENCES categories (cat_id) UNIQUE NOT NULL, subf_name TEXT NOT NULL, subf_desc);
+
 -- Table: threads
 DROP TABLE IF EXISTS threads;
-CREATE TABLE IF NOT EXISTS threads (thread_id INTEGER NOT NULL, thread_title TEXT NOT NULL, thread_cat INTEGER REFERENCES categories (cat_id), PRIMARY KEY (thread_id AUTOINCREMENT));
+CREATE TABLE IF NOT EXISTS threads (thread_id INTEGER NOT NULL, thread_title TEXT NOT NULL, thread_subf INTEGER REFERENCES categories (cat_id), PRIMARY KEY (thread_id AUTOINCREMENT));
 
 -- Table: users
 DROP TABLE IF EXISTS users;
