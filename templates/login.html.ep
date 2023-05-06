@@ -1,0 +1,19 @@
+% layout 'default', title => 'CharmBoard - Login';
+% if ($error) {
+<p style="color: red"><%= $error %></p>
+%};
+% if ($message) {
+<p style="color: blue"><%= $message %></p>
+%};
+<form method="post" action='/login'>
+  username: <input
+    id="username"
+    name="username"
+  /><br />
+  password: <input
+    id="password"
+    name="password"
+    type="password"
+  /><br />
+  <input type="submit" value="login" />
+</form>

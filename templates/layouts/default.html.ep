@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    %= include 'layouts/_header'
+    <%= content %>
+    %= include 'layouts/_footer'
+  </body>
+</html>

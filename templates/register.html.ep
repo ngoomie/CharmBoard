@@ -1,0 +1,30 @@
+% layout 'default', title => 'CharmBoard - Registration';
+% if ($error) {
+<p style="color: red"><%= $error %></p>
+%};
+% if ($message) {
+<p style="color: blue"><%= $message %></p>
+%};
+<p>fields marked with <span style="color: red">*</span> are required</p>
+<form method="post" action='/register'>
+  username: <input
+    id="username"
+    name="username"
+  /><span style="color: red"> *</span><br />
+  email: <input
+    id="email"
+    name="email"
+    type="email"
+  /><span style="color: red"> *</span><br />
+  password: <input
+    id="password"
+    name="password"
+    type="password"
+  /><span style="color: red"> *</span><br />
+  confirm password: <input
+    id="confirm-password"
+    name="confirm-password"
+    type="password"
+  /><span style="color: red"> *</span><br />
+  <input type="submit" value="register account" />
+</form>
