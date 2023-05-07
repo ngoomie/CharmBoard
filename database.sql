@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on Sat. May 6 00:01:26 2023
+-- File generated with SQLiteStudio v3.4.4 on Sun. May 7 00:02:05 2023
 --
 -- Text encoding used: UTF-8
 --
@@ -8,40 +8,104 @@ BEGIN TRANSACTION;
 
 -- Table: categories
 DROP TABLE IF EXISTS categories;
-CREATE TABLE IF NOT EXISTS categories (cat_id INTEGER NOT NULL UNIQUE, cat_name TEXT, PRIMARY KEY (cat_id AUTOINCREMENT));
+
+CREATE TABLE IF NOT EXISTS categories (
+    cat_id   INTEGER NOT NULL ON CONFLICT ROLLBACK
+                     UNIQUE ON CONFLICT ROLLBACK,
+    cat_name TEXT,
+    PRIMARY KEY (
+        cat_id AUTOINCREMENT
+    )
+);
+
 
 -- Table: posts
 DROP TABLE IF EXISTS posts;
-CREATE TABLE IF NOT EXISTS "posts" (
-	"post_id"	INTEGER NOT NULL UNIQUE,
-	"user_id"	INTEGER NOT NULL,
-	"thread_id"	INTEGER NOT NULL,
-	"post_date"	INTEGER NOT NULL,
-	PRIMARY KEY("post_id" AUTOINCREMENT),
-	FOREIGN KEY("user_id") REFERENCES "users"("user_id"),
-	FOREIGN KEY("thread_id") REFERENCES "threads"("thread_id")
+
+CREATE TABLE IF NOT EXISTS posts (
+    post_id   INTEGER NOT NULL ON CONFLICT ROLLBACK
+                      UNIQUE ON CONFLICT ROLLBACK,
+    user_id   INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    thread_id INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    post_date INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    PRIMARY KEY (
+        post_id AUTOINCREMENT
+    ),
+    FOREIGN KEY (
+        user_id
+    )
+    REFERENCES users (user_id),
+    FOREIGN KEY (
+        thread_id
+    )
+    REFERENCES threads (thread_id) 
 );
 
--- Table: session
-DROP TABLE IF EXISTS session;
-CREATE TABLE IF NOT EXISTS "session" (
-	"user_id"	INTEGER NOT NULL UNIQUE,
-	"session_id"	TEXT NOT NULL,
-	"session_expiry"	INTEGER,
-	PRIMARY KEY("user_id")
+
+-- Table: sessions
+DROP TABLE IF EXISTS sessions;
+
+CREATE TABLE IF NOT EXISTS sessions (
+    user_id        INTEGER        PRIMARY KEY
+                                  REFERENCES users (user_id) 
+                                  UNIQUE
+                                  NOT NULL,
+    session_key    TEXT           NOT NULL
+                                  UNIQUE,
+    session_expiry NUMERIC        NOT NULL,
+    is_ip_bound    INTEGER (1, 1) NOT NULL
+                                  DEFAULT (0),
+    bound_ip       TEXT
 );
+
 
 -- Table: subforums
 DROP TABLE IF EXISTS subforums;
-CREATE TABLE IF NOT EXISTS subforums (subf_id INTEGER PRIMARY KEY UNIQUE NOT NULL, subf_cat INTEGER REFERENCES categories (cat_id) UNIQUE NOT NULL, subf_name TEXT NOT NULL, subf_desc);
+
+CREATE TABLE IF NOT EXISTS subforums (
+    subf_id   INTEGER PRIMARY KEY
+                      UNIQUE ON CONFLICT ROLLBACK
+                      NOT NULL ON CONFLICT ROLLBACK,
+    subf_cat  INTEGER REFERENCES categories (cat_id) 
+                      UNIQUE ON CONFLICT ROLLBACK
+                      NOT NULL ON CONFLICT ROLLBACK,
+    subf_name TEXT    NOT NULL ON CONFLICT ROLLBACK,
+    subf_desc
+);
+
 
 -- Table: threads
 DROP TABLE IF EXISTS threads;
-CREATE TABLE IF NOT EXISTS threads (thread_id INTEGER NOT NULL, thread_title TEXT NOT NULL, thread_subf INTEGER REFERENCES categories (cat_id), PRIMARY KEY (thread_id AUTOINCREMENT));
+
+CREATE TABLE IF NOT EXISTS threads (
+    thread_id    INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    thread_title TEXT    NOT NULL ON CONFLICT ROLLBACK,
+    thread_subf  INTEGER REFERENCES categories (cat_id),
+    PRIMARY KEY (
+        thread_id AUTOINCREMENT
+    )
+);
+
 
 -- Table: users
 DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users (user_id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL UNIQUE ON CONFLICT ABORT, email TEXT UNIQUE NOT NULL, password INTEGER NOT NULL, salt TEXT NOT NULL, signup_date INTEGER NOT NULL, PRIMARY KEY (user_id AUTOINCREMENT) ON CONFLICT FAIL);
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id     INTEGER NOT NULL ON CONFLICT ROLLBACK
+                        UNIQUE ON CONFLICT ROLLBACK,
+    username    TEXT    NOT NULL ON CONFLICT ROLLBACK
+                        UNIQUE ON CONFLICT ROLLBACK,
+    email       TEXT    UNIQUE ON CONFLICT ROLLBACK
+                        NOT NULL ON CONFLICT ROLLBACK,
+    password    TEXT    NOT NULL ON CONFLICT ROLLBACK,
+    salt        TEXT    NOT NULL ON CONFLICT ROLLBACK,
+    signup_date REAL    NOT NULL,
+    PRIMARY KEY (
+        user_id AUTOINCREMENT
+    )
+    ON CONFLICT ABORT
+);
+
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

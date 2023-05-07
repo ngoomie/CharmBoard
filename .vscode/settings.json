@@ -8,8 +8,13 @@
         "Authen",
         "CharmBoard",
         "Facepunch",
+        "passchk",
+        "passgen",
         "pgsql",
         "resultset",
-        "signup"
+        "signup",
+        "subf",
+        "subforum",
+        "subforums"
     ]
 }
