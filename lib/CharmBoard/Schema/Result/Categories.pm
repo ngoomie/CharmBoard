@@ -10,6 +10,7 @@ __PACKAGE__->add_columns(
   cat_name => {
     data_type         => 'text',
     is_nullable       => 0, });
+    
 __PACKAGE__->set_primary_key('cat_id');
 
 1

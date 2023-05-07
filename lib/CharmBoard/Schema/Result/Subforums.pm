@@ -19,7 +19,9 @@ __PACKAGE__->add_columns(
     data_type         => 'text',
     is_auto_increment => 0,
     is_nullable       => 1, });
+
 __PACKAGE__->set_primary_key('subf_id');
+
 __PACKAGE__->belongs_to(
   subf_cat =>
     'CharmBoard::Schema::Result::Categories',

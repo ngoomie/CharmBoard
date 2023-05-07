@@ -1,3 +1,4 @@
 % layout 'default', title => 'CharmBoard';
-
-index page
+% my $hpm = "you are not logged in";
+% if ($self->session('is_auth')) {$hpm = "you're logged in!"};
+<%= $hpm %>

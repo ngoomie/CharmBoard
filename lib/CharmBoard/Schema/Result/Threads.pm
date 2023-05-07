@@ -13,7 +13,9 @@ __PACKAGE__->add_columns(
   thread_subf   => {
     data_type         => 'integer',
     is_nullable       => 1, });
+
 __PACKAGE__->set_primary_key('thread_id');
+
 __PACKAGE__->belongs_to(
   thread_subf =>
     'CharmBoard::Schema::Result::Subforums',

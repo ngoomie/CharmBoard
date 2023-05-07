@@ -2,7 +2,6 @@ package CharmBoard::Controller::Auth;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CharmBoard::Crypt::Password;
 use CharmBoard::Crypt::Seasoning;
-use Time::HiRes qw(time);
 
 # initial registration page
 sub register ($app) { 
@@ -41,17 +40,21 @@ sub register_do ($app) {
     if ($userCheck && $emailCheck) { # notify user that username and email are both already being used
       $app->flash(error => 'Username and email already in use.');
       $app->redirect_to('register')}
+
     elsif ($userCheck) { # notify user that only username is already in use
       $app->flash(error => 'Username is already in use.');
       $app->redirect_to('register')}
+
     elsif ($emailCheck) { # notify user that only email is already in use
       $app->flash(error => 'email is already in use.');
       $app->redirect_to('register')}}
+
     else { # TODO: add more error handling here, in case SQL transact fails
     # append pepper to pass before hashing
     $password = $app->pepper . ':' . $password;
     # return hashed result + salt
     my ($salt, $hash) = passgen($password);
+
     # add user info and pw/salt to DB
     $app->schema->resultset('Users')->create({
       username    => $username,
@@ -59,6 +62,7 @@ sub register_do ($app) {
       password    => $hash,
       salt        => $salt,
       signup_date => time });
+
     $app->flash(message => 'User registered successfully!');
     $app->redirect_to('register')}};
 
@@ -70,20 +74,47 @@ sub login ($app) {
 
 sub login_do ($app) {
   my $username = $app->param('username');
-  my $password = $app->param('password');
-  $password = $app->pepper . ':' . $password;
+  my $password = $app->pepper . ':' . $app->param('password');
+
   my $userInfoCheck = $app->schema->resultset('Users')->search({username => $username});
+
   if ($userInfoCheck) {
-    my $savedSalt = $userInfoCheck->get_column('salt')->first;
-    my $savedHash = $userInfoCheck->get_column('password')->first;
-    my $passCheckStatus = passchk($savedSalt, $savedHash, $password);
+    my $passCheckStatus = passchk($userInfoCheck->get_column('salt')->first,
+        $userInfoCheck->get_column('password')->first, $password);
+
     if ($passCheckStatus) {
-      $app->flash(message => 'Password correct, but auth isn\'t implemented yet');
-      $app->redirect_to('login')
-    } else {
+      my $userID = $userInfoCheck->get_column('user_id')->first;
+
+      # delete old session from DB if exists
+      if ($app->schema->resultset('Session')->search({user_id => $userID})) {
+        $app->schema->resultset('Session')->search({user_id => $userID})->delete; };
+
+      # gen session key and set expiry time
+      my $sessionKey = seasoning(16);
+      my $sessionExpiry = time + 604800;
+
+      # add session to database
+      $app->schema->resultset('Session')->create({
+      user_id        => $userID,
+      session_key    => $sessionKey,
+      session_expiry => $sessionExpiry,
+      is_ip_bound    => 0,
+      bound_ip       => undef });
+
+      # now create session cookie for user
+      $app->session(is_auth => 1);
+      $app->session(user_id => $userID);
+      $app->session(session_key => $sessionKey);
+      $app->session(expires => $sessionExpiry);
+
+      # redirect to index
+      $app->redirect_to('/')}
+
+    else {
       $app->flash(error => 'Password incorrect');
       $app->redirect_to('login')}}
-    else {
+
+  else {
     $app->flash(error => 'User ' . $username . ' does not exist.');
     $app->redirect_to('login')};
 
