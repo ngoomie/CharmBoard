@@ -3,12 +3,12 @@ use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('sessions');
 __PACKAGE__->add_columns(
-  user_id        => {
-    data_type         => 'integer',
-    is_auto_increment => 0,
-    is_nullable       => 0, },
   session_key    => {
     data_type         => 'text',
+    is_auto_increment => 0,
+    is_nullable       => 0, },
+  user_id        => {
+    data_type         => 'integer',
     is_auto_increment => 0,
     is_nullable       => 0, },
   session_expiry => {
@@ -24,7 +24,7 @@ __PACKAGE__->add_columns(
     is_auto_increment => 0,
     is_nullable       => 1, });
   
-__PACKAGE__->set_primary_key('user_id');
+__PACKAGE__->set_primary_key('session_key');
 
 __PACKAGE__->belongs_to(
   user_id =>

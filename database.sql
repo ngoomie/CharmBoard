@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on Sun. May 7 22:15:23 2023
+-- File generated with SQLiteStudio v3.4.4 on Mon. May 8 03:12:22 2023
 --
 -- Text encoding used: UTF-8
 --
@@ -9,7 +9,7 @@ BEGIN TRANSACTION;
 -- Table: categories
 DROP TABLE IF EXISTS categories;
 
-CREATE TABLE IF NOT EXISTS categories (
+CREATE TABLE categories (
     cat_id   INTEGER NOT NULL ON CONFLICT ROLLBACK
                      UNIQUE ON CONFLICT ROLLBACK,
     cat_name TEXT,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS categories (
 -- Table: posts
 DROP TABLE IF EXISTS posts;
 
-CREATE TABLE IF NOT EXISTS posts (
+CREATE TABLE posts (
     post_id   INTEGER NOT NULL ON CONFLICT ROLLBACK
                       UNIQUE ON CONFLICT ROLLBACK,
     user_id   INTEGER NOT NULL ON CONFLICT ROLLBACK,
@@ -45,12 +45,12 @@ CREATE TABLE IF NOT EXISTS posts (
 -- Table: sessions
 DROP TABLE IF EXISTS sessions;
 
-CREATE TABLE IF NOT EXISTS sessions (
-    user_id        INTEGER        PRIMARY KEY
-                                  REFERENCES users (user_id) 
-                                  NOT NULL,
+CREATE TABLE sessions (
     session_key    TEXT           NOT NULL
-                                  UNIQUE,
+                                  UNIQUE
+                                  PRIMARY KEY,
+    user_id        INTEGER        REFERENCES users (user_id) 
+                                  NOT NULL,
     session_expiry NUMERIC        NOT NULL,
     is_ip_bound    INTEGER (1, 1) NOT NULL
                                   DEFAULT (0),
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 -- Table: subforums
 DROP TABLE IF EXISTS subforums;
 
-CREATE TABLE IF NOT EXISTS subforums (
+CREATE TABLE subforums (
     subf_id   INTEGER PRIMARY KEY
                       UNIQUE ON CONFLICT ROLLBACK
                       NOT NULL ON CONFLICT ROLLBACK,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS subforums (
 -- Table: threads
 DROP TABLE IF EXISTS threads;
 
-CREATE TABLE IF NOT EXISTS threads (
+CREATE TABLE threads (
     thread_id    INTEGER NOT NULL ON CONFLICT ROLLBACK,
     thread_title TEXT    NOT NULL ON CONFLICT ROLLBACK,
     thread_subf  INTEGER REFERENCES categories (cat_id),
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS threads (
 -- Table: users
 DROP TABLE IF EXISTS users;
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
     user_id     INTEGER NOT NULL ON CONFLICT ROLLBACK
                         UNIQUE ON CONFLICT ROLLBACK,
     username    TEXT    NOT NULL ON CONFLICT ROLLBACK
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS users (
                         NOT NULL ON CONFLICT ROLLBACK,
     password    TEXT    NOT NULL ON CONFLICT ROLLBACK,
     salt        TEXT    NOT NULL ON CONFLICT ROLLBACK,
-    signup_date REAL    NOT NULL,
+    signup_date INTEGER NOT NULL,
     PRIMARY KEY (
         user_id AUTOINCREMENT
     )

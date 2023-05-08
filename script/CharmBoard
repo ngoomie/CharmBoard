@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-
+use experimental 'try', 'smartmatch';
 use strict;
 use warnings;
 use utf8;
