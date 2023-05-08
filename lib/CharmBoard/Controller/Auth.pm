@@ -76,48 +76,42 @@ sub login_do ($app) {
   my $username = $app->param('username');
   my $password = $app->pepper . ':' . $app->param('password');
 
-  my $userInfoCheck = $app->schema->resultset('Users')->search({username => $username});
+  try {
+    # check to see if user by entered username exists
+    my $userInfo = $app->schema->resultset('Users')->search({username => $username});
+    $userInfo or die;
 
-  if ($userInfoCheck) {
-    my $passCheckStatus = passchk($userInfoCheck->get_column('salt')->first,
-        $userInfoCheck->get_column('password')->first, $password);
+    # now check password validity
+    my $passCheck = passchk($userInfo->get_column('salt')->first,
+      $userInfo->get_column('password')->first, $password);
+    $passCheck or die;
 
-    if ($passCheckStatus) {
-      my $userID = $userInfoCheck->get_column('user_id')->first;
+    # get user ID for session creation
+    my $userID = $userInfo->get_column('user_id')->first;
 
-      # delete old session from DB if exists
-      if ($app->schema->resultset('Session')->search({user_id => $userID})) {
-        $app->schema->resultset('Session')->search({user_id => $userID})->delete; };
+    # gen session key and set expiry time
+    my $sessionKey = seasoning(16);
+    my $sessionExpiry = time + 604800;
 
-      # gen session key and set expiry time
-      my $sessionKey = seasoning(16);
-      my $sessionExpiry = time + 604800;
-
-      # add session to database
-      $app->schema->resultset('Session')->create({
+    # add session to database
+    $app->schema->resultset('Session')->create({
       user_id        => $userID,
       session_key    => $sessionKey,
       session_expiry => $sessionExpiry,
       is_ip_bound    => 0,
       bound_ip       => undef });
-
-      # now create session cookie for user
-      $app->session(is_auth => 1);
-      $app->session(user_id => $userID);
-      $app->session(session_key => $sessionKey);
-      $app->session(expires => $sessionExpiry);
-
-      # redirect to index
-      $app->redirect_to('/')}
-
-    else {
-      $app->flash(error => 'Password incorrect');
-      $app->redirect_to('login')}}
-
-  else {
-    $app->flash(error => 'User ' . $username . ' does not exist.');
-    $app->redirect_to('login')};
-
-}
+    
+    # now create session cookie for user
+    $app->session(is_auth => 1);
+    $app->session(user_id => $userID);
+    $app->session(session_key => $sessionKey);
+    $app->session(expires => $sessionExpiry);
+    
+    # redirect to index upon success
+    $app->redirect_to('/')}
+  catch ($error) { # redir to login page on fail
+    print $error;
+    $app->flash(error => 'Username or password incorrect.');
+    $app->redirect_to('login')}};
 
 1;

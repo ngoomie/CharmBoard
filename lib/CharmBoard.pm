@@ -1,5 +1,4 @@
 package CharmBoard;
-use experimental 'smartmatch';
 use Mojo::Base 'Mojolicious', -signatures;
 use CharmBoard::Schema;
 

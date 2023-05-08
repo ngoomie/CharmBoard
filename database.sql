@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on Sun. May 7 00:02:05 2023
+-- File generated with SQLiteStudio v3.4.4 on Sun. May 7 22:15:23 2023
 --
 -- Text encoding used: UTF-8
 --
@@ -48,7 +48,6 @@ DROP TABLE IF EXISTS sessions;
 CREATE TABLE IF NOT EXISTS sessions (
     user_id        INTEGER        PRIMARY KEY
                                   REFERENCES users (user_id) 
-                                  UNIQUE
                                   NOT NULL,
     session_key    TEXT           NOT NULL
                                   UNIQUE,
