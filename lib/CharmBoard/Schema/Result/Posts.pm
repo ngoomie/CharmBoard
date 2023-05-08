@@ -13,7 +13,7 @@ __PACKAGE__->add_columns(
     is_nullable       => 0, },
   thread_id => {
     data_type         => 'integer',
-    is_auto_increment => 1,
+    is_auto_increment => 0,
     is_nullable       => 0, },
   post_date => {
     data_type         => 'integer',
