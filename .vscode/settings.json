@@ -10,7 +10,6 @@
         "Facepunch",
         "passchk",
         "passgen",
-        "pgsql",
         "resultset",
         "signup",
         "subf",
@@ -33,15 +32,6 @@
             "tag": "?",
             "color": "#3498DB",
             "strikethrough": false,
-            "underline": false,
-            "backgroundColor": "transparent",
-            "bold": false,
-            "italic": false
-        },
-        {
-            "tag": "//",
-            "color": "#474747",
-            "strikethrough": true,
             "underline": false,
             "backgroundColor": "transparent",
             "bold": false,
