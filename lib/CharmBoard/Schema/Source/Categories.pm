@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Result::Categories;
+package CharmBoard::Schema::Source::Categories;
 use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('categories');

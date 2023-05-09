@@ -1,9 +1,6 @@
 # CharmBoard-specific
 charmboard.conf
 
-# Mojolicious examples to be nuked later
-t/basic.t
-
 # SQLite
 *.db
 *.db-*

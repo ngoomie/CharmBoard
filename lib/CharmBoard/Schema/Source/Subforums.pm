@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Result::Subforums;
+package CharmBoard::Schema::Source::Subforums;
 use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('subforums');
@@ -9,6 +9,7 @@ __PACKAGE__->add_columns(
     is_nullable       => 0, },
   subf_cat => {
     data_type         => 'integer',
+    is_foreign_key    => 1,
     is_auto_increment => 0,
     is_nullable       => 0, },
   subf_name => {
@@ -24,7 +25,7 @@ __PACKAGE__->set_primary_key('subf_id');
 
 __PACKAGE__->belongs_to(
   subf_cat =>
-    'CharmBoard::Schema::Result::Categories',
+    'CharmBoard::Schema::Source::Categories',
     {'foreign.cat_id' => 'self.subf_cat'});
 
 1

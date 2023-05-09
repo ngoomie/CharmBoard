@@ -1,4 +1,4 @@
-% layout 'default', title => 'CharmBoard - Login';
+% layout 'default', title => $self->boardName . ' - Login';
 % if ($error) {
 <p style="color: red"><%= $error %></p>
 %};

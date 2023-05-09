@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Result::Threads;
+package CharmBoard::Schema::Source::Threads;
 use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('threads');
@@ -12,13 +12,16 @@ __PACKAGE__->add_columns(
     is_nullable       => 0, },
   thread_subf   => {
     data_type         => 'integer',
+    is_foreign_key    => 1,
     is_nullable       => 1, });
+    # ! thread_subf should NOT be nullable once subforums
+    # ! are properly implemented
 
 __PACKAGE__->set_primary_key('thread_id');
 
 __PACKAGE__->belongs_to(
   thread_subf =>
-    'CharmBoard::Schema::Result::Subforums',
+    'CharmBoard::Schema::Source::Subforums',
     {'foreign.subf_id' => 'self.thread_subf'});
 
 1

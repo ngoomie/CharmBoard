@@ -1,4 +1,5 @@
 package CharmBoard::Crypt::Seasoning;
+use utf8;
 use Math::Random::Secure qw(irand);
 
 use Exporter qw(import);

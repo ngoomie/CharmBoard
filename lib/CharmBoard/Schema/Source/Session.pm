@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Result::Session;
+package CharmBoard::Schema::Source::Session;
 use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('sessions');
@@ -28,7 +28,7 @@ __PACKAGE__->set_primary_key('session_key');
 
 __PACKAGE__->belongs_to(
   user_id =>
-    'CharmBoard::Schema::Result::Users',
+    'CharmBoard::Schema::Source::Users',
     'user_id');
 
 1

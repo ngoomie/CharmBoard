@@ -1,4 +1,5 @@
-package CharmBoard::Schema::Result::Users;
+package CharmBoard::Schema::Source::Users;
+use utf8;
 use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('users');
