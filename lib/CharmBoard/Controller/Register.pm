@@ -39,10 +39,10 @@ sub register_do ($self) {
     # check to make sure username and/or email isn't already in use;
     # if not, continue with registration
     ## search for input username and email in database
-    $userCheck  = $self->schema->resultset('Users')->search(
-      {username => $username})->single;
-    $emailCheck = $self->schema->resultset('Users')->search(
-      {email => $email})->single;
+    $userCheck  = $self->schema->resultset('Users')->find(
+      {username => $username});
+    $emailCheck = $self->schema->resultset('Users')->find(
+      {email => $email});
 
     ($userCheck && $emailCheck) eq undef
       or die "Username already in use.\nemail already in use.";

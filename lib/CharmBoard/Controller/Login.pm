@@ -6,6 +6,7 @@ use CharmBoard::Crypt::Password;
 use CharmBoard::Crypt::Seasoning;
 
 =pod
+=encoding utf8
 =head1 NAME
 CharmBoard::Controller::Login
 =cut
@@ -28,7 +29,7 @@ sub login_do ($self) {
 
   try { # check user credentials first
     # check to see if user by entered username exists
-    $userInfo = $self->schema->resultset('Users')->search(
+    $userInfo = $self->schema->resultset('Users')->find(
       {username => $username});
     $userInfo or die;
 

@@ -24,7 +24,7 @@ __PACKAGE__->add_columns(
     is_auto_increment => 0,
     is_nullable       => 1, });
   
-__PACKAGE__->set_primary_key('session_key');
+__PACKAGE__->set_primary_key(qw(session_key user_id));
 
 __PACKAGE__->belongs_to(
   user_id =>

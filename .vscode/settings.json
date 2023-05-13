@@ -12,9 +12,11 @@
         "passgen",
         "resultset",
         "signup",
+        "SMALLINT",
         "subf",
         "subforum",
-        "subforums"
+        "subforums",
+        "TINYTEXT"
     ],
     "better-comments.highlightPlainText": true,
     "better-comments.tags": [

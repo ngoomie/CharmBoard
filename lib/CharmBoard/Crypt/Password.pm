@@ -7,30 +7,37 @@ use Exporter qw(import);
 our @EXPORT = qw(passgen passchk);
 
 =pod
+=encoding utf8
 =head1 NAME
 CharmBoard::Crypt::Password - password processing module
 =head1 SYNOPSIS
 =begin perl
 use CharmBoard::Crypt::Password;
 
-($salt, $hash) = passgen($plaintextPassword);
-$passwordVerification = passchk($salt, $hash, $plaintextPassword)
+my ($salt, $hash) =
+  passgen($plaintextPassword);
+
+$passwordVerification =
+  passchk($salt, $hash, $plaintextPassword)
 =end perl
 =head1 DESCRIPTION
-CharmBoard::Crypt::Password processes passwords, either processing
-new passwords for database storage, or checking passwords entered
-when logging in to make sure they're correct.
+CharmBoard::Crypt::Password processes passwords, either
+processing new passwords for database storage, or checking
+passwords entered when logging in to make sure they're
+correct.
 
-Currently the only available password hashing scheme is Argon2, but
-this might be changed later on.
+Currently the only available password hashing scheme is
+Argon2, but this might be changed later on.
+=over
 =cut
 
 =pod
-=head2 passgen
-passgen is the function for generating password salts and hashes to
-be inserted into the database. It takes the plaintext password you
-wish to hash as the only argument, and outputs the salt and
-Argon2 hash string in hexadecimal form.
+=item passgen
+passgen is the function for generating password salts and
+hashes to be inserted into the database. It takes the
+plaintext password you wish to hash as the only argument,
+and outputs the salt and Argon2 hash string in hexadecimal
+form.
 =cut
 sub passgen ($) {
   my $argon2 = Authen::Passphrase::Argon2->new(
@@ -44,15 +51,18 @@ sub passgen ($) {
   return ($argon2->salt_hex, $argon2->hash_hex)};
 
 =pod
-=head2 passchk
-passchk is the function for checking plaintext passwords against the
-hashed password + salt already stored in the database. It takes the
-salt and Argon2 hash string in hex form plus the plaintext password
-as inputs, and outputs a true/false value indicating whether or not
-the input  password matched. Intended for login authentication or
-anywhere else where one may need to verify passwords (i.e. before
-changing existing passwords, or for admins confirming they wish to
-perform a risky or nonreversible operation.)
+=item passchk
+passchk is the function for checking plaintext passwords
+against the hashed password + salt already stored in the
+database. It takes the salt and Argon2 hash string in hex
+form plus the plaintext password as inputs, and outputs a
+true/false value indicating whether or not the input
+password matched. Intended for login authentication or
+anywhere else where one may need to verify passwords (i.e.
+before changing existing passwords, or for admins
+confirming they wish to perform a risky or nonreversible
+operation.)
+=back
 =cut
 sub passchk ($$$) {
   my $argon2 = Authen::Passphrase::Argon2->new(

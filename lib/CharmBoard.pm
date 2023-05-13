@@ -5,6 +5,7 @@ use Mojo::Base 'Mojolicious', -signatures;
 use CharmBoard::Schema;
 
 =pod
+=encoding utf8
 =head1 NAME
 CharmBoard - revive the fun posting experience!
 =head1 NOTES
