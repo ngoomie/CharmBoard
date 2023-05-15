@@ -1,4 +1,5 @@
 {
+    "editor.tabSize": 2,
     "cSpell.enableFiletypes": [
         "mojolicious",
         "perl"
@@ -8,28 +9,19 @@
         "Authen",
         "CharmBoard",
         "Facepunch",
+        "listsubf",
         "passchk",
         "passgen",
+        "pgsql",
         "resultset",
         "signup",
-        "SMALLINT",
         "subf",
         "subforum",
         "subforums",
-        "TINYTEXT"
+        "subfs"
     ],
     "better-comments.highlightPlainText": true,
     "better-comments.tags": [
-    
-        {
-            "tag": "!",
-            "color": "#FF2D00",
-            "strikethrough": false,
-            "underline": false,
-            "backgroundColor": "transparent",
-            "bold": false,
-            "italic": false
-        },
         {
             "tag": "?",
             "color": "#3498DB",
@@ -57,5 +49,10 @@
             "bold": false,
             "italic": false
         }
+    ],
+    "perl-toolbox.lint.perlcriticProfile": "$workspaceRoot/.perlcriticrc",
+    "perl-toolbox.lint.useProfile": true,
+    "perl-toolbox.syntax.includePaths": [
+        "$workspaceRoot/libs"
     ]
 }

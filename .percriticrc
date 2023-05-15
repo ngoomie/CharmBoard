@@ -1,0 +1,5 @@
+include = CodeLayout::RequireUseUTF8 CompileTime Documentation::RequirePodAtEnd
+
+severity = 5
+verbose = 5
+criticism-fatal = 1

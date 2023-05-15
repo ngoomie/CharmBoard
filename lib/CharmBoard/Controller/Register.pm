@@ -1,18 +1,23 @@
 package CharmBoard::Controller::Register;
+use strict;
+use warnings;
+use experimental qw(try smartmatch);
 use utf8;
-use experimental 'try', 'smartmatch';
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CharmBoard::Crypt::Password;
 
 # initial registration page
-sub register ($self) { 
+sub register { 
+  my $self = shift;
   $self->render(
     template => 'register',
     error    => $self->flash('error'),
     message  => $self->flash('message'))};
 
 # process submitted registration form
-sub register_do ($self) { 
+sub register_do { 
+  my $self = shift;
+  
   my $username        = $self->param('username');
   my $email           = $self->param('email');
   my $password        = $self->param('password');
@@ -39,10 +44,10 @@ sub register_do ($self) {
     # check to make sure username and/or email isn't already in use;
     # if not, continue with registration
     ## search for input username and email in database
-    $userCheck  = $self->schema->resultset('Users')->find(
-      {username => $username});
-    $emailCheck = $self->schema->resultset('Users')->find(
-      {email => $email});
+    $userCheck  = $self->schema->resultset('Users')->search(
+      {username => $username})->single;
+    $emailCheck = $self->schema->resultset('Users')->search(
+      {email => $email})->single;
 
     ($userCheck && $emailCheck) eq undef
       or die "Username already in use.\nemail already in use.";

@@ -1,35 +1,20 @@
 package CharmBoard;
+
 use utf8;
-use experimental 'try', 'smartmatch';
+use strict;
+use warnings;
+use experimental qw(try smartmatch);
+
 use Mojo::Base 'Mojolicious', -signatures;
 use CharmBoard::Schema;
 
-=pod
-=encoding utf8
-=head1 NAME
-CharmBoard - revive the fun posting experience!
-=head1 NOTES
-This documentation is intended for prospective code
-contributors. If you're looking to set CharmBoard up,
-look for the Markdown format (.md) documentation instead.
-
-CharmBoard uses a max line length of 60 chars and a tab
-size of two spaces.
-=head1 DESCRIPTION
-CharmBoard is forum software written in Perl with
-Mojolicious, intended to be a more fun alternative to the
-bigger forum suites available today, inspired by older
-forum software like AcmlmBoard, while also being more
-modernized in terms of security practices than they are.
-Customization ability is another important goal next to
-making software that feels fun for the end user to use.
-=cut
-
 # this method will run once at server start
-sub startup ($self) {
+sub startup {
+  my $self = shift;
+
   # load plugins that require no additional conf
   $self->plugin('TagHelpers');
-  
+
   # load configuration from config file
   my $config = $self->plugin('Config' =>
     {file => 'charmboard.conf'});
@@ -55,7 +40,7 @@ sub startup ($self) {
     $dsn = "dbi:SQLite:" . $config->{database}->{name};
     $dbUnicode = "sqlite_unicode"}
 
-  elsif ($self->config->{database}->{type} ~~ 'mysql') {
+  elsif ($self->config->{database}->{type} ~~ 'mariadb') {
     $dsn = "dbi:mysql:" . $config->{database}->{name};
     $dbUnicode = "mysql_enable_utf"}
 
@@ -63,7 +48,7 @@ sub startup ($self) {
     in charmboard.conf. If you're sure you've set it to
     something supported, maybe double check your spelling?
     \n\n\t
-    Valid options: 'sqlite', 'mysql'"};
+    Valid options: 'sqlite', 'mariadb'"};
 
   my $schema = CharmBoard::Schema->connect(
     $dsn,
@@ -96,7 +81,7 @@ sub startup ($self) {
   $r->post('/login')->to(
     controller => 'Controller::Login',
     action => 'login_do');
-  
+
   ## logout
   $r->get('/logout')->to(
     controller => 'Controller::Logout',
@@ -104,3 +89,5 @@ sub startup ($self) {
 }
 
 1;
+
+__END__
