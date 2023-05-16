@@ -1,13 +1,15 @@
 package CharmBoard::Controller::Register;
+
+use utf8;
 use strict;
 use warnings;
 use experimental qw(try smartmatch);
-use utf8;
+
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CharmBoard::Crypt::Password;
 
 # initial registration page
-sub register { 
+sub register {
   my $self = shift;
   $self->render(
     template => 'register',
@@ -15,9 +17,9 @@ sub register {
     message  => $self->flash('message'))};
 
 # process submitted registration form
-sub register_do { 
+sub register_do {
   my $self = shift;
-  
+
   my $username        = $self->param('username');
   my $email           = $self->param('email');
   my $password        = $self->param('password');

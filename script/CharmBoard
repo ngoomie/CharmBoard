@@ -1,8 +1,9 @@
 #!/usr/bin/env perl
-use experimental qw(try smartmatch);
+
+use utf8;
 use strict;
 use warnings;
-use utf8;
+use experimental qw(try smartmatch);
 
 use Mojo::File qw(curfile);
 use lib curfile->dirname->sibling('lib')->to_string;

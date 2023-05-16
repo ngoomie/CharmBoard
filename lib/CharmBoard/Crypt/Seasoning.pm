@@ -1,8 +1,10 @@
 package CharmBoard::Crypt::Seasoning;
+
+use utf8;
 use strict;
 use warnings;
 use experimental qw(try smartmatch);
-use utf8;
+
 use Math::Random::Secure qw(irand);
 
 use Exporter qw(import);
@@ -18,7 +20,7 @@ sub seasoning {
   while (length($blend) < $_[0]) {
   # gen num to choose char for $blend
   $blend = $blend . $spices[irand(@spices)]};
-  
+
   return ($blend); }
 
 1;

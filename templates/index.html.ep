@@ -22,6 +22,7 @@ foreach my $category ($categoryTree->getAllChildren) { %>
     $category->getNodeValue,
     $self->schema->resultset('Categories')->
       title_from_id($category->getNodeValue)) %>
+  <% say ('$category: ' . $category); %>
 <%
   foreach my $subforum ($category->getAllChildren) { %>
     <%= $subfItem->(

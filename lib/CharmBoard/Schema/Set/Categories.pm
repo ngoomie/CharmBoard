@@ -3,7 +3,6 @@ package CharmBoard::Schema::Set::Categories;
 use utf8;
 use strict;
 use warnings;
-use feature qw(say unicode_strings);
 use experimental qw(try smartmatch);
 
 use base 'DBIx::Class::ResultSet';

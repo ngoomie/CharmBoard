@@ -1,8 +1,10 @@
 package CharmBoard::Schema::Source::Subforums;
+
+use utf8;
 use strict;
 use warnings;
 use experimental qw(try smartmatch);
-use utf8;
+
 use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('subforums');

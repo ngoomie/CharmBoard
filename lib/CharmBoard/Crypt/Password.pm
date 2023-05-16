@@ -1,8 +1,10 @@
 package CharmBoard::Crypt::Password;
+
+use utf8;
 use strict;
 use warnings;
 use experimental qw(try smartmatch);
-use utf8;
+
 use Authen::Passphrase::Argon2;
 use CharmBoard::Crypt::Seasoning;
 
@@ -16,7 +18,7 @@ sub passgen {
     cost        => 17,
     factor      => '32M',
     parallelism => 1,
-    size        => 32 ); 
+    size        => 32 );
 
   return ($argon2->salt_hex, $argon2->hash_hex)};
 

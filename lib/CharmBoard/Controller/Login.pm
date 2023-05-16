@@ -1,15 +1,17 @@
 package CharmBoard::Controller::Login;
+
+use utf8;
 use strict;
 use warnings;
 use experimental qw(try smartmatch);
-use utf8;
+
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CharmBoard::Crypt::Password;
 use CharmBoard::Crypt::Seasoning;
 
 sub login {
   my $self = shift;
-  
+
   $self->render(
     template => 'login',
     error    => $self->flash('error'),
@@ -56,16 +58,16 @@ sub login_do {
       session_expiry => time + 604800,
       is_ip_bound    => 0,
       bound_ip       => undef }) or die;
-    
+
     # now create session cookie for user
     $self->session(is_auth     => 1);
     $self->session(user_id     => $userID);
     $self->session(session_key => $sessionKey);
     $self->session(expiration  => 604800);
-    
+
     # redirect to index upon success
     $self->redirect_to('/')}
-    
+
   catch ($catchError) { # redirect to login page on fail
     print $catchError;
     $self->flash(error => 'Your username and password were correct,

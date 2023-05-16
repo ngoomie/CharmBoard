@@ -1,8 +1,10 @@
 package CharmBoard::Schema;
+
+use utf8;
 use strict;
 use warnings;
 use experimental qw(try smartmatch);
-use utf8;
+
 use base qw(DBIx::Class::Schema);
 
 __PACKAGE__->load_namespaces(

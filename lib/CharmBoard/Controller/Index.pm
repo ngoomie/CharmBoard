@@ -3,7 +3,6 @@ package CharmBoard::Controller::Index;
 use utf8;
 use strict;
 use warnings;
-use feature qw(say unicode_strings);
 use experimental qw(try smartmatch);
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
@@ -19,27 +18,28 @@ sub index {
   # create a Tree::Simple object that will contain the list
   # of categories and the subforums that belong to them
   my $tree =
-    Tree::Simple->new("subfList", Tree::Simple->ROOT);
+    Tree::Simple->new("ROOT", Tree::Simple->ROOT);
 
-  my ($fetchSubf, $catBranch);
+  my (@fetchSubf, $catBranch);
   foreach my $iterCat (@allCat) {
-    # create branch of subfList for the current category
+    # create branch of ROOT for the current category
+
     $catBranch =
       Tree::Simple->new($iterCat, $tree);
 
     # fetch all subforums that belong to this category
-    $fetchSubf =
+    @fetchSubf =
       $self->schema->resultset('Subforums')
         ->fetch_by_cat($iterCat);
 
     # add each fetched subforum as children of the branch
     # for the current category
-    foreach my $iterSubf ($fetchSubf) {
+    foreach my $iterSubf (@fetchSubf) {
       Tree::Simple->new($iterSubf, $catBranch)}}
 
   $self->render(
     template => 'index',
-    categoryTree     => $tree)}
+    categoryTree => $tree)}
 
 1;
 __END__
