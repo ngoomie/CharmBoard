@@ -1,4 +1,7 @@
 package CharmBoard::Schema::Source::Users;
+use strict;
+use warnings;
+use experimental qw(try smartmatch);
 use utf8;
 use base qw(DBIx::Class::Core);
 
@@ -11,19 +14,15 @@ __PACKAGE__->add_columns(
     is_auto_increment => 1, },
   username    => {
     data_type         => 'text',
-    is_numeric        => 0,
     is_nullable       => 0, },
   email       => {
     data_type         => 'text',
-    is_numeric        => 0,
     is_nullable       => 0, },
   password    => {
     data_type         => 'text',
-    is_numeric        => 0,
     is_nullable       => 0, },
   salt        => {
     data_type         => 'text',
-    is_numeric        => 0,
     is_nullable       => 0, },
   signup_date => {
     data_type         => 'integer',
@@ -32,4 +31,5 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key('user_id');
 
-1
+1;
+__END__

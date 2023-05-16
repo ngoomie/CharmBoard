@@ -1,22 +1,22 @@
 package CharmBoard::Controller::Login;
+use strict;
+use warnings;
+use experimental qw(try smartmatch);
 use utf8;
-use experimental 'try', 'smartmatch';
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CharmBoard::Crypt::Password;
 use CharmBoard::Crypt::Seasoning;
 
-=pod
-=head1 NAME
-CharmBoard::Controller::Login
-=cut
-
-sub login ($self) {
+sub login {
+  my $self = shift;
+  
   $self->render(
     template => 'login',
     error    => $self->flash('error'),
     message  => $self->flash('message'))};
 
-sub login_do ($self) {
+sub login_do {
+  my $self = shift;
   my $username = $self->param('username');
   my $password = $self->pepper . ':' . $self->param('password');
 
@@ -74,3 +74,9 @@ sub login_do ($self) {
     $self->redirect_to('login')}}
 
 1;
+
+__END__
+=pod
+=head1 NAME
+CharmBoard::Controller::Login
+=cut

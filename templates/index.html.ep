@@ -1,2 +1,32 @@
 % layout 'default', title => $self->boardName;
-this is the index page
+
+<% my $catHeader = begin %>
+  % my $_catID = shift; my $_name = shift;
+  <div class="category-header category-<%= $_catID %>">
+    <b><%= $_name %></b>
+  </div>
+<% end %>
+
+<% my $subfItem = begin %>
+  % my $_subfID = shift; my $_catID = shift;
+  % my $_name = shift;
+  <div class="
+    subforum-item subforum-<%= $_subfID %>
+    category-<%= $_catID %>
+  "><%= $_name %></div>
+<% end %>
+
+<%
+foreach my $category ($categoryTree->getAllChildren) { %>
+  <%= $catHeader->(
+    $category->getNodeValue,
+    $self->schema->resultset('Categories')->
+      title_from_id($category->getNodeValue)) %>
+<%
+  foreach my $subforum ($category->getAllChildren) { %>
+    <%= $subfItem->(
+      $subforum->getNodeValue,
+      $category->getNodeValue,
+      $self->schema->resultset('Subforums')->
+        title_from_id($subforum->getNodeValue)) %>
+<%  }} %>

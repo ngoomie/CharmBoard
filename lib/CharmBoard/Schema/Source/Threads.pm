@@ -1,4 +1,8 @@
 package CharmBoard::Schema::Source::Threads;
+use strict;
+use warnings;
+use experimental qw(try smartmatch);
+use utf8;
 use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('threads');
@@ -13,9 +17,7 @@ __PACKAGE__->add_columns(
   thread_subf   => {
     data_type         => 'integer',
     is_foreign_key    => 1,
-    is_nullable       => 1, });
-    # ! thread_subf should NOT be nullable once subforums
-    # ! are properly implemented
+    is_nullable       => 0, });
 
 __PACKAGE__->set_primary_key('thread_id');
 
@@ -24,4 +26,5 @@ __PACKAGE__->belongs_to(
     'CharmBoard::Schema::Source::Subforums',
     {'foreign.subf_id' => 'self.thread_subf'});
 
-1
+1;
+__END__
