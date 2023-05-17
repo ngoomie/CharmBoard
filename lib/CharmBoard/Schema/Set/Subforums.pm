@@ -8,20 +8,27 @@ use experimental qw(try smartmatch);
 use base 'DBIx::Class::ResultSet';
 
 sub fetch_by_cat {
-  my $set = shift;
+  my $_set = shift;
 
-  my $fetch =
-    $set->search(
+  my $_fetch =
+    $_set->search(
       {'subf_cat' => $_[0]      },
       {order_by   => 'subf_rank'});
 
-  return($fetch->get_column('subf_id')->all)}
+  return($_fetch->get_column('subf_id')->all)}
 
-sub title_from_id {
-  my $set = shift;
+sub cat_from_id {
+  my $_set = shift;
 
   return(
-    $set->search({'subf_id' => $_[0]})->
+    $_set->search({'subf_id' => $_[0]})->
+      get_column('subf_cat')->first)}
+
+sub title_from_id {
+  my $_set = shift;
+
+  return(
+    $_set->search({'subf_id' => $_[0]})->
       get_column('subf_name')->first)}
 
 1;

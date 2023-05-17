@@ -20,10 +20,10 @@ sub startup {
     {file => 'charmboard.conf'});
 
   # set this specific forum's name
-  $self->helper(boardName => sub {$config->{board_name}});
+  $self->helper(board_name => sub {$config->{board_name}});
 
   # load dev env only stuff, if applicable
-  if ( $config->{environment} eq 'dev' ) {
+  if ($config->{environment} eq 'dev') {
     $self->plugin('Renderer::WithoutCache');
     $self->renderer->cache->max_keys(0)};
 
@@ -31,34 +31,41 @@ sub startup {
   $self->secrets($config->{secrets});
 
   # import password pepper value
-  $self->helper(pepper => sub {$config->{pass_crypt}->{pepper}});
+  $self->helper(
+    pepper => sub {$config->{pass_crypt}->{pepper}});
 
   ## database setup
   # ? this could maybe be a given/when
-  my ($dsn, $dbUnicode);
-  if ($self->config->{database}->{type} ~~ 'sqlite') {
-    $dsn = "dbi:SQLite:" . $config->{database}->{name};
-    $dbUnicode = "sqlite_unicode"}
+  { my ($_dsn, $_unicode);
+    if ($self->config->{database}->{type} ~~ 'sqlite') {
+      $_dsn = "dbi:SQLite:" . $config->{database}->{name};
+      $_unicode = "sqlite_unicode"}
 
-  elsif ($self->config->{database}->{type} ~~ 'mariadb') {
-    $dsn = "dbi:mysql:" . $config->{database}->{name};
-    $dbUnicode = "mysql_enable_utf"}
+    elsif ($self->config->{database}->{type} ~~ 'mariadb') {
+      $_dsn = "dbi:mysql:" . $config->{database}->{name};
+      $_unicode = "mysql_enable_utf"}
 
-  else {die "\nUnknown, unsupported, or empty database type
-    in charmboard.conf. If you're sure you've set it to
-    something supported, maybe double check your spelling?
-    \n\n\t
-    Valid options: 'sqlite', 'mariadb'"};
+    else {die "\nUnknown, unsupported, or empty database type
+      in charmboard.conf. If you're sure you've set it to
+      something supported, maybe double check your spelling?
+      \n\n\t
+      Valid options: 'sqlite', 'mariadb'"};
 
-  my $schema = CharmBoard::Schema->connect(
-    $dsn,
-    $config->{database}->{user},
-    $config->{database}->{pass},
-    {$dbUnicode => 1});
-  $self->helper(schema => sub {$schema});
+    our $schema = CharmBoard::Schema->connect(
+      $_dsn,
+      $config->{database}->{user},
+      $config->{database}->{pass},
+      {$_unicode => 1});
+
+    $self->helper(schema => sub {$schema})}
 
   # router
   my $r = $self->routes;
+
+  # view subforum
+  $r->get('/subforum/:id')->to(
+    controller => 'Controller::ViewSubf',
+    action => 'subf_view');
 
   # controller routes
   ## index page
@@ -89,5 +96,24 @@ sub startup {
 }
 
 1;
-
 __END__
+
+=pod
+=head1 NAME
+CharmBoard - revive the fun posting experience!
+
+=head1 NOTES
+This documentation is intended for prospective code
+contributors. If you're looking to set CharmBoard up,
+look for the Markdown format (.md) documentation instead.
+
+CharmBoard uses a max line length of 60 chars and a tab
+size of two spaces.
+
+=head1 DESCRIPTION
+CharmBoard is forum software written in Perl with
+Mojolicious, intended to be a more fun alternative to the
+bigger forum suites available today, inspired by older
+forum software like AcmlmBoard, while also being more
+modernized in terms of security practices than they are.
+=cut

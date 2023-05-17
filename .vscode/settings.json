@@ -10,6 +10,7 @@
         "CharmBoard",
         "Facepunch",
         "listsubf",
+        "origp",
         "passchk",
         "passgen",
         "pgsql",
@@ -54,5 +55,14 @@
     "perl-toolbox.lint.useProfile": true,
     "perl-toolbox.syntax.includePaths": [
         "$workspaceRoot/libs"
-    ]
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "CharmBoard",
+            "database": "${workspaceFolder:CharmBoard}/charmboard.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
 }

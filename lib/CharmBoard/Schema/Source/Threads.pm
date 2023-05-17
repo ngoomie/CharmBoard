@@ -16,6 +16,10 @@ __PACKAGE__->add_columns(
   thread_title  => {
     data_type         => 'text',
     is_nullable       => 0, },
+  thread_op  => {
+    data_type         => 'integer',
+    is_foreign_key    => 1,
+    is_nullable       => 0, },
   thread_subf   => {
     data_type         => 'integer',
     is_foreign_key    => 1,
@@ -27,6 +31,9 @@ __PACKAGE__->belongs_to(
   thread_subf =>
     'CharmBoard::Schema::Source::Subforums',
     {'foreign.subf_id' => 'self.thread_subf'});
+__PACKAGE__->belongs_to(
+  thread_op => 'CharmBoard::Schema::Source::Posts',
+    {'foreign.post_id' => 'self.thread_op'});
 
 1;
 __END__

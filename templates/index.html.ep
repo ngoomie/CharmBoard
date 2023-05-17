@@ -1,31 +1,30 @@
-% layout 'default', title => $self->boardName;
+% layout 'default', title => $self->board_name;
 
-<% my $catHeader = begin %>
-  % my $_catID = shift; my $_name = shift;
-  <div class="category-header category-<%= $_catID %>">
+<% my $cat_header = begin %>
+  % my $_cat_id = shift; my $_name = shift;
+  <div class="category-header category-<%= $_cat_id %>">
     <b><%= $_name %></b>
   </div>
 <% end %>
 
-<% my $subfItem = begin %>
-  % my $_subfID = shift; my $_catID = shift;
+<% my $subf_item = begin %>
+  % my $_subf_id = shift; my $_cat_id = shift;
   % my $_name = shift;
   <div class="
-    subforum-item subforum-<%= $_subfID %>
-    category-<%= $_catID %>
-  "><%= $_name %></div>
+    subforum-item subforum-<%= $_subf_id %>
+    category-<%= $_cat_id %>
+  "><a href="/subforum/<%= $_subf_id %>"><%= $_name %></a></div>
 <% end %>
 
 <%
-foreach my $category ($categoryTree->getAllChildren) { %>
-  <%= $catHeader->(
+foreach my $category ($category_tree->getAllChildren) { %>
+  <%= $cat_header->(
     $category->getNodeValue,
     $self->schema->resultset('Categories')->
       title_from_id($category->getNodeValue)) %>
-  <% say ('$category: ' . $category); %>
 <%
   foreach my $subforum ($category->getAllChildren) { %>
-    <%= $subfItem->(
+    <%= $subf_item->(
       $subforum->getNodeValue,
       $category->getNodeValue,
       $self->schema->resultset('Subforums')->

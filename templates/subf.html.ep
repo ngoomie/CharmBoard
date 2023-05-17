@@ -1,0 +1,23 @@
+% layout 'default', title => $subf_title . ' - ' . $self->board_name;
+% my @thread_list = @{stash('thread_list')};
+
+<% my $thread_item = begin %>
+% my $_thread_id = shift; my $_thread_title = shift;
+<div class=" thread-item thread-<%= $_thread_id %>">
+  <a href="/thread/<%= $_thread_id %>"></a>
+</div>
+<% end %>
+
+<a href="/"><%= $self->board_name %></a> » <%= $cat_title %> » <%= $subf_title %>
+<br /><br />
+
+<% if (! @thread_list) { %>
+Oops! Looks like there's no threads here yet. Maybe you'd
+like to <a href="/thread/new/<%= $subf_id %>">make one?</a>
+<% } else {
+  foreach my $thread_id (@thread_list) { %>
+<%= $thread_item->(
+  $thread_id,
+  $self->schema->resultset('Threads')->
+    title_from_id($thread_id)) %>
+<% }} %>

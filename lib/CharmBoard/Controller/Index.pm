@@ -12,34 +12,34 @@ sub index {
   my $self = shift;
 
   # fetch a list of all categories
-  my @allCat =
+  my @all_cat =
     $self->schema->resultset('Categories')->fetch_all;
 
   # create a Tree::Simple object that will contain the list
   # of categories and the subforums that belong to them
   my $tree =
-    Tree::Simple->new("ROOT", Tree::Simple->ROOT);
+    Tree::Simple->new("subf_list", Tree::Simple->ROOT);
 
-  my (@fetchSubf, $catBranch);
-  foreach my $iterCat (@allCat) {
-    # create branch of ROOT for the current category
+  my (@fetch_subf, $cat_branch);
+  foreach my $iter_cat (@all_cat) {
+    # create branch of subf_list for the current category
 
-    $catBranch =
-      Tree::Simple->new($iterCat, $tree);
+    $cat_branch =
+      Tree::Simple->new($iter_cat, $tree);
 
     # fetch all subforums that belong to this category
-    @fetchSubf =
+    @fetch_subf =
       $self->schema->resultset('Subforums')
-        ->fetch_by_cat($iterCat);
+        ->fetch_by_cat($iter_cat);
 
     # add each fetched subforum as children of the branch
     # for the current category
-    foreach my $iterSubf (@fetchSubf) {
-      Tree::Simple->new($iterSubf, $catBranch)}}
+    foreach my $iter_subf (@fetch_subf) {
+      Tree::Simple->new($iter_subf, $cat_branch)}}
 
   $self->render(
     template => 'index',
-    categoryTree => $tree)}
+    category_tree => $tree)}
 
 1;
 __END__

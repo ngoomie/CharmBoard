@@ -1,4 +1,4 @@
-% layout 'default', title => $self->boardName . ' - Registration';
+% layout 'default', title => $self->board_name . ' - Registration';
 % if ($error) {
 <p style="color: red"><%= $error %></p>
 %};
