@@ -12,26 +12,30 @@ use Exporter qw(import);
 our @EXPORT = qw(passgen passchk);
 
 sub passgen {
-  my $argon2 = Authen::Passphrase::Argon2->new(
+  my $_argon2 = Authen::Passphrase::Argon2->new(
     salt        => seasoning(32),
     passphrase  => $_[0],
     cost        => 17,
     factor      => '32M',
     parallelism => 1,
-    size        => 32 );
+    size        => 32
+  );
 
-  return ($argon2->salt_hex, $argon2->hash_hex)};
+  return ($_argon2->salt_hex, $_argon2->hash_hex)
+}
 
 sub passchk {
-  my $argon2 = Authen::Passphrase::Argon2->new(
+  my $_argon2 = Authen::Passphrase::Argon2->new(
     salt_hex    => $_[0],
     hash_hex    => $_[1],
     cost        => 17,
     factor      => '32M',
     parallelism => 1,
-    size        => 32 );
+    size        => 32
+  );
 
-  return ($argon2->match($_[2]))}
+  return ($_argon2->match($_[2]))
+}
 
 1;
 

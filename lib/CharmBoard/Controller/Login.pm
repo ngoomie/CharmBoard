@@ -15,10 +15,12 @@ sub login {
   $self->render(
     template => 'login',
     error    => $self->flash('error'),
-    message  => $self->flash('message'))};
+    message  => $self->flash('message')
+  )
+}
 
 sub login_do {
-  my $self = shift;
+  my $self     = shift;
   my $username = $self->param('username');
   my $password = $self->pepper . ':' . $self->param('password');
 
@@ -28,24 +30,26 @@ sub login_do {
   # 'our' so they work throughout the entire subroutine
   our ($user_info, $pass_check, $user_id, $session_key);
 
-  try { # check user credentials first
+  # check user credentials first
+  try {
     # check to see if user by entered username exists
-    $user_info = $self->schema->resultset('Users')->search(
-      {username => $username});
+    $user_info = $self->schema->resultset('Users')
+        ->search({ username => $username });
     $user_info or die;
 
     # now check password validity
     $pass_check = passchk($user_info->get_column('salt')->first,
       $user_info->get_column('password')->first, $password);
-    $pass_check or die;}
+    $pass_check or die;
 
-  catch ($catch_error) { # redirect to login page on fail
+  } catch ($catch_error) {    # redirect to login page on fail
     print $catch_error;
     $self->flash(error => 'Username or password incorrect.');
-    $self->redirect_to('login');}
+    $self->redirect_to('login');
+  }
 
-  try { # now attempt to create session
-    # get user ID for session creation
+  try {                       # now attempt to create session
+                              # get user ID for session creation
     $user_id = $user_info->get_column('user_id')->first;
 
     # gen session key
@@ -57,23 +61,29 @@ sub login_do {
       user_id        => $user_id,
       session_expiry => time + 604800,
       is_ip_bound    => 0,
-      bound_ip       => undef }) or die;
+      bound_ip       => undef
+    })
+        or die;
 
     # now create session cookie for user
-    $self->session(is_auth     => 1);
-    $self->session(user_id     => $user_id);
+    $self->session(is_auth     => 1           );
+    $self->session(user_id     => $user_id    );
     $self->session(session_key => $session_key);
-    $self->session(expiration  => 604800);
+    $self->session(expiration  => 604800      );
 
     # redirect to index upon success
-    $self->redirect_to('/')}
+    $self->redirect_to('/')
 
-  catch ($catch_error) { # redirect to login page on fail
+  } catch ($catch_error) {    # redirect to login page on fail
     print $catch_error;
-    $self->flash(error => 'Your username and password were correct,
-      but a server error prevented you from logging in. This has been
-      logged so the administrator can fix it.');
-    $self->redirect_to('login')}}
+    $self->flash(
+      error => 'Your username and password were correct, but a server
+          error prevented you from logging in. This has been logged
+          so the administrator can fix it.'
+    );
+    $self->redirect_to('login')
+  }
+}
 
 1;
 

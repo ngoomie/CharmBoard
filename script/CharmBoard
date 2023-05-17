@@ -13,5 +13,3 @@ use Mojolicious::Commands;
 Mojolicious::Commands->start_app('CharmBoard');
 
 __END__
-
-

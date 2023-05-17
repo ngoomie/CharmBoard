@@ -7,3 +7,9 @@ charmboard.conf
 
 # Perl::Critic
 perlcritic.log
+
+# Perl::Tidy
+perltidy.log
+*.tdy
+*.pm.LOG
+*.pl.LOG
