@@ -4,6 +4,7 @@ charmboard.conf
 # SQLite
 *.db
 *.db-*
+*.db.old
 
 # Perl::Critic
 perlcritic.log
