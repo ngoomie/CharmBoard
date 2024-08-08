@@ -24,7 +24,6 @@ sub startup {
 
   # load dev env only stuff, if applicable
   if ($config->{environment} eq 'dev') {
-    $self->plugin('Renderer::WithoutCache');
     $self->renderer->cache->max_keys(0)
   }
 
