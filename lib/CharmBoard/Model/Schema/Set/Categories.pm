@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Set::Categories;
+package CharmBoard::Model::Schema::Set::Categories;
 
 use utf8;
 use strict;
@@ -28,7 +28,7 @@ sub title_from_id {
 __END__
 =pod
 =head1 NAME
-CharmBoard::Schema::Set::Categories - DBIC ResultSet for the
+CharmBoard::Model::Schema::Set::Categories - DBIC ResultSet for the
 categories table
 
 =head1 SYNOPSIS

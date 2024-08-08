@@ -1,4 +1,4 @@
-package CharmBoard::Crypt::Password;
+package CharmBoard::Model::Crypt::Password;
 
 use utf8;
 use strict;
@@ -6,7 +6,7 @@ use warnings;
 use experimental qw(try smartmatch);
 
 use Authen::Passphrase::Argon2;
-use CharmBoard::Crypt::Seasoning;
+use CharmBoard::Model::Crypt::Seasoning;
 
 use Exporter qw(import);
 our @EXPORT = qw(passgen passchk);
@@ -42,16 +42,16 @@ sub passchk {
 __END__
 =pod
 =head1 NAME
-CharmBoard::Crypt::Password - password processing module
+CharmBoard::Model::Crypt::Password - password processing module
 =head1 SYNOPSIS
 =begin perl
-use CharmBoard::Crypt::Password;
+use CharmBoard::Model::Crypt::Password;
 
 ($salt, $hash) = passgen($plaintextPassword);
 $passwordVerification = passchk($salt, $hash, $plaintextPassword)
 =end perl
 =head1 DESCRIPTION
-CharmBoard::Crypt::Password processes passwords, either processing
+CharmBoard::Model::Crypt::Password processes passwords, either processing
 new passwords for database storage, or checking passwords entered
 when logging in to make sure they're correct.
 

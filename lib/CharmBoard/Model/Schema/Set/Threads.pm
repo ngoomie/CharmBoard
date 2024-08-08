@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Set::Threads;
+package CharmBoard::Model::Schema::Set::Threads;
 
 use utf8;
 use strict;

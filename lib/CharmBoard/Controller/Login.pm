@@ -6,8 +6,8 @@ use warnings;
 use experimental qw(try smartmatch);
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
-use CharmBoard::Crypt::Password;
-use CharmBoard::Crypt::Seasoning;
+use CharmBoard::Model::Crypt::Password;
+use CharmBoard::Model::Crypt::Seasoning;
 
 sub login {
   my $self = shift;

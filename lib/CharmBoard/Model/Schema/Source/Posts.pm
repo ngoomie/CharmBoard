@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Source::Posts;
+package CharmBoard::Model::Schema::Source::Posts;
 
 use utf8;
 use strict;
@@ -33,11 +33,11 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('post_id');
 
 __PACKAGE__->belongs_to(
-  user_id   => 'CharmBoard::Schema::Source::Users',
+  user_id   => 'CharmBoard::Model::Schema::Source::Users',
   'user_id'
 );
 __PACKAGE__->belongs_to(
-  thread_id => 'CharmBoard::Schema::Source::Threads',
+  thread_id => 'CharmBoard::Model::Schema::Source::Threads',
   'thread_id'
 );
 

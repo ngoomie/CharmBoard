@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Source::Session;
+package CharmBoard::Model::Schema::Source::Session;
 
 use utf8;
 use strict;
@@ -34,7 +34,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('session_key');
 
 __PACKAGE__->belongs_to(
-  user_id => 'CharmBoard::Schema::Source::Users',
+  user_id => 'CharmBoard::Model::Schema::Source::Users',
   'user_id'
 );
 

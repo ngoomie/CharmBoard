@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Source::Categories;
+package CharmBoard::Model::Schema::Source::Categories;
 
 use utf8;
 use strict;

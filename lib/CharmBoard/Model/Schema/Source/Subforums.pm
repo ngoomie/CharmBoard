@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Source::Subforums;
+package CharmBoard::Model::Schema::Source::Subforums;
 
 use utf8;
 use strict;
@@ -37,7 +37,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('subf_id');
 
 __PACKAGE__->belongs_to(
-  subf_cat => 'CharmBoard::Schema::Source::Categories',
+  subf_cat => 'CharmBoard::Model::Schema::Source::Categories',
   { 'foreign.cat_id' => 'self.subf_cat' }
 );
 

@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Source::Users;
+package CharmBoard::Model::Schema::Source::Users;
 
 use utf8;
 use strict;

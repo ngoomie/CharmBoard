@@ -6,7 +6,7 @@ use warnings;
 use experimental qw(try smartmatch);
 
 use Mojo::Base 'Mojolicious', -signatures;
-use CharmBoard::Schema;
+use CharmBoard::Model::Schema;
 
 # this method will run once at server start
 sub startup {
@@ -53,7 +53,7 @@ sub startup {
       Valid options: 'sqlite', 'mariadb'"
     }
 
-    our $schema = CharmBoard::Schema->connect(
+    our $schema = CharmBoard::Model::Schema->connect(
       $_dsn,
       $config->{database}->{user},
       $config->{database}->{pass},

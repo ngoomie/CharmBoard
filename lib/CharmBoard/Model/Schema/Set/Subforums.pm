@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Set::Subforums;
+package CharmBoard::Model::Schema::Set::Subforums;
 
 use utf8;
 use strict;

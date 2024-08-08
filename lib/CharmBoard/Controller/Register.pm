@@ -6,7 +6,7 @@ use warnings;
 use experimental qw(try smartmatch);
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
-use CharmBoard::Crypt::Password;
+use CharmBoard::Model::Crypt::Password;
 
 # initial registration page
 sub register {

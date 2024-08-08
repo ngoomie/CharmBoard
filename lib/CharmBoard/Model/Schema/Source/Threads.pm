@@ -1,4 +1,4 @@
-package CharmBoard::Schema::Source::Threads;
+package CharmBoard::Model::Schema::Source::Threads;
 
 use utf8;
 use strict;
@@ -33,11 +33,11 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('thread_id');
 
 __PACKAGE__->belongs_to(
-  thread_subf => 'CharmBoard::Schema::Source::Subforums',
+  thread_subf => 'CharmBoard::Model::Schema::Source::Subforums',
   { 'foreign.subf_id' => 'self.thread_subf' }
 );
 __PACKAGE__->belongs_to(
-  thread_op   => 'CharmBoard::Schema::Source::Posts',
+  thread_op   => 'CharmBoard::Model::Schema::Source::Posts',
   { 'foreign.post_id' => 'self.thread_op' }
 );
 
