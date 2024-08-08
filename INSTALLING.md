@@ -16,5 +16,3 @@ CharmBoard supports two different types of databases. Below is a table listing o
 ### Installing dependencies
 
 (filler filler filler)
-
-**NOTE:** If you use a RHEL-related Linux distro (RHEL, Rocky Linux, Fedora, et al) you might need to install `DBIx::Class` using either `yum` or `dnf` instead of with `cpan`, or it may not be recognized by your Perl install. The package name is `perl-DBIx-Class`.
