@@ -9,25 +9,25 @@ use base qw(DBIx::Class::Core);
 
 __PACKAGE__->table('users');
 __PACKAGE__->add_columns(
-  user_id  =>
+  user_id     =>
   {     data_type         => 'integer',
         is_numeric        => 1,
         is_nullable       => 0,
         is_auto_increment => 1,
   },
-  username =>
+  username    =>
   {     data_type         => 'text',
         is_nullable       => 0,
   },
-  email    =>
+  email       =>
   {     data_type         => 'text',
         is_nullable       => 0,
   },
-  password =>
+  password    =>
   {     data_type         => 'text',
         is_nullable       => 0,
   },
-  salt     =>
+  salt        =>
   {     data_type         => 'text',
         is_nullable       => 0,
   },

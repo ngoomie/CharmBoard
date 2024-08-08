@@ -1,4 +1,5 @@
-% layout 'default', title => $self->board_name;
+% layout 'default',
+% title => $self->board_name;
 
 <% my $cat_header = begin %>
   % my $_cat_id = shift; my $_name = shift;

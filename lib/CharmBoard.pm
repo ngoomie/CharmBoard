@@ -67,17 +67,26 @@ sub startup {
   # router
   my $r = $self->routes;
 
+  # controller routes
+  ## index page
+  $r->get('/')->to(
+    controller => 'Controller::Index',
+    action     => 'index'
+  );
   # view subforum
   $r->get('/subforum/:id')->to(
     controller => 'Controller::ViewSubf',
     action     => 'subf_view'
   );
 
-  # controller routes
-  ## index page
-  $r->get('/')->to(
-    controller => 'Controller::Index',
-    action     => 'index'
+  # create thread
+  $r->get('/thread/new/:id')->to(
+    controller => 'Controller::NewThread',
+    action     => 'thread_compose'
+  );
+  $r->post('/thread/new/:id')->to(
+    controller => 'Controller::NewThread',
+    action     => 'thread_submit'
   );
 
   ## registration page

@@ -1,0 +1,20 @@
+% layout 'default',
+% title => 'New thread - ' . $self->board_name;
+<a href="/"><%= $self->board_name %></a> » <%= $cat_title %> »
+    <%= $subf_title %> » new thread
+<br /><br />
+<form method="post" action="/thread/new/<%= $subf_id %>">
+  <input
+      id="thread-title"
+      name="thread-title"
+      type="text"
+      placeholder="thread title"
+  /><br />
+  <textarea
+      id="post-content"
+      name="post-content"
+      cols="50" rows="5"
+      placeholder="post content">
+  </textarea><br /><br />
+  <input type="submit" value="post!" />
+</form>

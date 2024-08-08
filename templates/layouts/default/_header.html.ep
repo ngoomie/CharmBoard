@@ -3,12 +3,12 @@ my $userControls;
 
 # TODO: once implemented, put username + profile link first
 if ($self->session('is_auth') == 1) {
-  my $username = 
+  my $username =
   $userControls = "<a href=\"/logout\">logout</a>"}
 else {
     $userControls =
-    "<a href=\"/login\">login</a> |
-      <a href=\"/register\">register</a>"};
+        "<a href=\"/login\">login</a> |
+              <a href=\"/register\">register</a>"};
 %>
 <a href="/"><h2><%== $self->board_name %></h2></a>
 <%== $userControls %><br /><br />
