@@ -3,7 +3,8 @@ package CharmBoard::Model::Crypt::Seasoning;
 use utf8;
 use strict;
 use warnings;
-use experimental qw(try smartmatch);
+use experimental qw(try);
+use feature ':5.20';
 
 use Math::Random::Secure qw(irand);
 

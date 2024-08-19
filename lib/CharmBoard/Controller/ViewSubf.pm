@@ -3,7 +3,8 @@ package CharmBoard::Controller::ViewSubf;
 use utf8;
 use strict;
 use warnings;
-use experimental qw(try smartmatch);
+use experimental qw(try);
+use feature ':5.20';
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 

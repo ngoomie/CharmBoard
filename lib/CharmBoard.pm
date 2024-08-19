@@ -3,7 +3,8 @@ package CharmBoard;
 use utf8;
 use strict;
 use warnings;
-use experimental qw(try smartmatch);
+use experimental qw(try);
+use feature ':5.20';
 
 use Mojo::Base 'Mojolicious', -signatures;
 use CharmBoard::Model::Schema;
@@ -37,11 +38,11 @@ sub startup {
   # ? this could maybe be a given/when
   {
     my ($_dsn, $_unicode);
-    if ($self->config->{database}->{type} ~~ 'sqlite') {
+    if (lc($self->config->{database}->{type}) eq 'sqlite') {
       $_dsn     = "dbi:SQLite:" . $config->{database}->{name};
       $_unicode = "sqlite_unicode"
 
-    } elsif ($self->config->{database}->{type} ~~ 'mariadb') {
+    } elsif (lc($self->config->{database}->{type}) eq 'mariadb') {
       $_dsn     = "dbi:mysql:" . $config->{database}->{name};
       $_unicode = "mysql_enable_utf"
 

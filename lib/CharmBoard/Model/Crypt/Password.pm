@@ -3,7 +3,8 @@ package CharmBoard::Model::Crypt::Password;
 use utf8;
 use strict;
 use warnings;
-use experimental qw(try smartmatch);
+use experimental qw(try);
+use feature ':5.20';
 
 use Authen::Passphrase::Argon2;
 use CharmBoard::Model::Crypt::Seasoning;

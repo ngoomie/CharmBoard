@@ -3,7 +3,8 @@ package CharmBoard::Controller::Register;
 use utf8;
 use strict;
 use warnings;
-use experimental qw(try smartmatch);
+use experimental qw(try);
+use feature ':5.20';
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 use CharmBoard::Model::Crypt::Password;
@@ -54,6 +55,7 @@ sub register_do {
     $emailCheck = $self->schema->resultset('Users')
         ->search({ email => $email })->single;
 
+    # TODO: compress this into something less redundant
     ($userCheck && $emailCheck) eq undef
         or die "Username already in use.\nemail already in use.";
     ($userCheck) eq undef
