@@ -43,7 +43,7 @@ sub thread_submit {
         or die "Please fill both the title and post content fields"
   } catch ($catch_error) {
     $self->flash(error => $catch_error);
-    $self->redirect_to('/thread/new/:id')
+    $self->redirect_to('/:id/new')
   }
 }
 

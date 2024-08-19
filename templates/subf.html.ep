@@ -15,7 +15,7 @@
 
 <% if (! @thread_list) { %>
 Oops! Looks like there's no threads here yet. Maybe you'd
-like to <a href="/thread/new/<%= $subf_id %>">make one?</a>
+like to <a href="<%= $subf_id %>/new/">make one?</a>
 <% } else {
   foreach my $thread_id (@thread_list) { %>
 <%= $thread_item->(

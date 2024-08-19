@@ -14,7 +14,7 @@
   <div class="
     subforum-item subforum-<%= $_subf_id %>
     category-<%= $_cat_id %>
-  "><a href="/subforum/<%= $_subf_id %>"><%= $_name %></a></div>
+  "><a href="/<%= $_subf_id %>"><%= $_name %></a></div>
 <% end %>
 
 <%

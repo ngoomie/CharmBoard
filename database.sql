@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on Tue. May 16 22:16:54 2023
+-- File generated with SQLiteStudio v3.4.4 on Mon. Aug. 19 01:39:05 2024
 --
 -- Text encoding used: UTF-8
 --
@@ -8,7 +8,7 @@ BEGIN TRANSACTION;
 
 -- Table: categories
 DROP TABLE IF EXISTS categories;
-CREATE TABLE categories (cat_id INTEGER NOT NULL ON CONFLICT ROLLBACK UNIQUE ON CONFLICT ROLLBACK, cat_rank INTEGER NOT NULL, cat_name TEXT, PRIMARY KEY (cat_id AUTOINCREMENT));
+CREATE TABLE categories (cat_id INTEGER NOT NULL ON CONFLICT ROLLBACK UNIQUE ON CONFLICT ROLLBACK, cat_rank INTEGER NOT NULL, cat_name TEXT, PRIMARY KEY (cat_id));
 
 -- Table: posts
 DROP TABLE IF EXISTS posts;
@@ -30,18 +30,11 @@ CREATE TABLE sessions (
 
 -- Table: subforums
 DROP TABLE IF EXISTS subforums;
-CREATE TABLE subforums (subf_id INTEGER PRIMARY KEY UNIQUE ON CONFLICT ROLLBACK NOT NULL ON CONFLICT ROLLBACK, subf_cat INTEGER REFERENCES categories (cat_id) NOT NULL, subf_rank INTEGER NOT NULL, subf_name TEXT NOT NULL ON CONFLICT ROLLBACK, subf_desc TEXT);
+CREATE TABLE subforums (subf_id TEXT (1, 5) PRIMARY KEY UNIQUE ON CONFLICT ROLLBACK NOT NULL ON CONFLICT ROLLBACK, subf_cat INTEGER REFERENCES categories (cat_id) NOT NULL, subf_rank INTEGER NOT NULL, subf_name TEXT NOT NULL ON CONFLICT ROLLBACK, subf_desc TEXT);
 
 -- Table: threads
 DROP TABLE IF EXISTS threads;
-CREATE TABLE threads (
-    thread_id    INTEGER NOT NULL ON CONFLICT ROLLBACK,
-    thread_title TEXT    NOT NULL ON CONFLICT ROLLBACK,
-    thread_subf  INTEGER REFERENCES categories (cat_id),
-    PRIMARY KEY (
-        thread_id AUTOINCREMENT
-    )
-);
+CREATE TABLE threads (thread_id INTEGER NOT NULL ON CONFLICT ROLLBACK, thread_title TEXT NOT NULL ON CONFLICT ROLLBACK, thread_subf TEXT (1, 5) REFERENCES categories (cat_id), PRIMARY KEY (thread_id AUTOINCREMENT));
 
 -- Table: users
 DROP TABLE IF EXISTS users;

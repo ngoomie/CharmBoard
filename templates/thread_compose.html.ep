@@ -3,7 +3,7 @@
 <a href="/"><%= $self->board_name %></a> » <%= $cat_title %> »
     <%= $subf_title %> » new thread
 <br /><br />
-<form method="post" action="/thread/new/<%= $subf_id %>">
+<form method="post" action="/<%= $subf_id %>/new/">
   <input
       id="thread-title"
       name="thread-title"

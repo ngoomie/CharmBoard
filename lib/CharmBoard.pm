@@ -73,17 +73,17 @@ sub startup {
     action     => 'index'
   );
   # view subforum
-  $r->get('/subforum/:id')->to(
+  $r->get('/:id')->to(
     controller => 'Controller::ViewSubf',
     action     => 'subf_view'
   );
 
   # create thread
-  $r->get('/thread/new/:id')->to(
+  $r->get('/:id/new')->to(
     controller => 'Controller::NewThread',
     action     => 'thread_compose'
   );
-  $r->post('/thread/new/:id')->to(
+  $r->post('/:id/new')->to(
     controller => 'Controller::NewThread',
     action     => 'thread_submit'
   );
