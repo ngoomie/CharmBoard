@@ -23,10 +23,10 @@ sub register {
 sub register_do {
   my $self = shift;
 
-  my $username        = $self->param('username');
-  my $email           = $self->param('email');
-  my $password        = $self->param('password');
-  my $confirmPassword = $self->param('confirm-password');
+  my $username         = $self->param('username');
+  my $email            = $self->param('email');
+  my $password         = $self->param('password');
+  my $confirm_password = $self->param('confirm-password');
 
   my $catch_error;
 
@@ -39,12 +39,12 @@ sub register_do {
     # TODO: implement email validation here at some point
 
     # check to make sure all required fields are filled
-    ($username, $email, $password, $confirmPassword)
+    ($username, $email, $password, $confirm_password)
         or die "Please fill out all required fields.";
 
     # check to make sure both passwords match
     # TODO: add check on frontend for this for people with JS enabled
-    $password eq $confirmPassword
+    $password eq $confirm_password
         or die "Passwords do not match";
 
     # check to make sure username and/or email isn't already in use;
