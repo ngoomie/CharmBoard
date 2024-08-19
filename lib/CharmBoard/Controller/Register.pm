@@ -28,11 +28,11 @@ sub register_do {
   my $password        = $self->param('password');
   my $confirmPassword = $self->param('confirm-password');
 
-  my $catchError;
+  my $catch_error;
 
   # declare vars used through multiple try/catch blocks with
   # 'our' so they work throughout the entire subroutine
-  our ($userCheck, $emailCheck, $salt, $hash);
+  our ($user_check, $email_check, $salt, $hash);
 
   # make sure registration info is valid
   try {
@@ -50,20 +50,20 @@ sub register_do {
     # check to make sure username and/or email isn't already in use;
     # if not, continue with registration
     ## search for input username and email in database
-    $userCheck = $self->schema->resultset('Users')
+    $user_check = $self->schema->resultset('Users')
         ->search({ username => $username })->single;
-    $emailCheck = $self->schema->resultset('Users')
+    $email_check = $self->schema->resultset('Users')
         ->search({ email => $email })->single;
 
     # TODO: compress this into something less redundant
-    ($userCheck && $emailCheck) eq undef
+    ($user_check && $email_check) eq undef
         or die "Username already in use.\nemail already in use.";
-    ($userCheck) eq undef
+    ($user_check) eq undef
         or die "Username already in use.";
-    ($emailCheck) eq undef
+    ($email_check) eq undef
         or die "email already in use."
-  } catch ($catchError) {
-    $self->flash(error => $catchError);
+  } catch ($catch_error) {
+    $self->flash(error => $catch_error);
     $self->redirect_to('register')
   }
 
@@ -85,8 +85,8 @@ sub register_do {
 
     $self->flash(message => 'User registered successfully!');
     $self->redirect_to('register')
-  } catch ($catchError) {
-    print $catchError;
+  } catch ($catch_error) {
+    print $catch_error;
     $self->flash(
       error =>
         'Your registration info was correct, but a server error

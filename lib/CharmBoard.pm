@@ -24,7 +24,7 @@ sub startup {
   $self->helper(board_name => sub { $config->{board_name} });
 
   # load dev env only stuff, if applicable
-  if ($config->{environment} eq 'dev') {
+  if (lc($config->{environment}) eq 'dev') {
     $self->renderer->cache->max_keys(0)
   }
 
