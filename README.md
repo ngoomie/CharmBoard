@@ -6,6 +6,7 @@ CharmBoard is forum software written in Perl, inspired by AcmlmBoard/its derivat
 
 - Perl5
 - `Mojolicious` ([website](https://www.mojolicious.org/), [metacpan](https://metacpan.org/pod/Mojolicious))
+  - `Mojolicious::Plugin::Model`
   - `Mojolicious::Plugin::Renderer::WithoutCache` — only needed in dev environment
 - `DBI`
   - `DBIx::Class`

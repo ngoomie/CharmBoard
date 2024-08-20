@@ -15,6 +15,7 @@ sub startup {
 
   # load plugins that require no additional conf
   $self->plugin('TagHelpers');
+  $self->plugin('Model', {namespaces => ['CharmBoard::Model']});
 
   # load configuration from config file
   my $config =
