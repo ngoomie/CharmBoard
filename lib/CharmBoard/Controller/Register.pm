@@ -7,7 +7,7 @@ use experimental qw(try);
 use feature ':5.20';
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
-use CharmBoard::Model::Crypt::Password;
+use CharmBoard::Util::Crypt::Password;
 
 # initial registration page
 sub register {

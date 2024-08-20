@@ -1,4 +1,4 @@
-package CharmBoard::Model::Crypt::Seasoning;
+package CharmBoard::Util::Crypt::Seasoning;
 
 use utf8;
 use strict;
