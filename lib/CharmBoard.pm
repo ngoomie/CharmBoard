@@ -74,21 +74,6 @@ sub startup {
     controller => 'Controller::Index',
     action     => 'index'
   );
-  # view subforum
-  $r->get('/:id')->to(
-    controller => 'Controller::ViewSubf',
-    action     => 'subf_view'
-  );
-
-  # create thread
-  $r->get('/:id/new')->to(
-    controller => 'Controller::NewThread',
-    action     => 'thread_compose'
-  );
-  $r->post('/:id/new')->to(
-    controller => 'Controller::NewThread',
-    action     => 'thread_submit'
-  );
 
   ## registration page
   $r->get('/register')->to(
@@ -114,7 +99,24 @@ sub startup {
   $r->get('/logout')->to(
     controller => 'Controller::Logout',
     action     => 'logout_do'
-  )
+  );
+
+  # view subforum
+  # NOTE: keep these at THE BOTTOM of routes, otherwise they override the above routes.
+  $r->get('/:id')->to(
+    controller => 'Controller::ViewSubf',
+    action     => 'subf_view'
+  );
+
+  # create thread
+  $r->get('/:id/new')->to(
+    controller => 'Controller::NewThread',
+    action     => 'thread_compose'
+  );
+  $r->post('/:id/new')->to(
+    controller => 'Controller::NewThread',
+    action     => 'thread_submit'
+  );
 }
 
 1;
