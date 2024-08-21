@@ -14,3 +14,6 @@ perltidy.log
 *.tdy
 *.pm.LOG
 *.pl.LOG
+
+# htmx
+public/htmx.*.js
