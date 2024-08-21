@@ -102,18 +102,17 @@ sub startup {
   );
 
   # view subforum
-  # NOTE: keep these at THE BOTTOM of routes, otherwise they override the above routes.
-  $r->get('/:id')->to(
+  $r->get('/board/:id')->to(
     controller => 'Controller::ViewSubf',
     action     => 'subf_view'
   );
 
   # create thread
-  $r->get('/:id/new')->to(
+  $r->get('/board/:id/new')->to(
     controller => 'Controller::NewThread',
     action     => 'thread_compose'
   );
-  $r->post('/:id/new')->to(
+  $r->post('/board/:id/new')->to(
     controller => 'Controller::NewThread',
     action     => 'thread_submit'
   );
