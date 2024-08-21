@@ -1,6 +1,6 @@
 # CharmBoard
 
-CharmBoard is forum software written in Perl, inspired by AcmlmBoard/its derivatives, the original Facepunch forums, and Knockout.chat. It's intended to be a more "fun" alternative to the bigger forum software suites available today. Though largely, it's just intended as a sort of pet project of mine for now and a way to learn Perl + Mojolicious, and some other modules I've been wanting to learn.
+CharmBoard is forum software written in Perl, inspired by chiefly AcmlmBoard and its derivatives. It's intended to be a more "fun" alternative to the bigger forum software suites available today. Though largely, it's just intended as a sort of pet project of mine for now and a way to learn Perl + Mojolicious, and some other modules I've been wanting to learn.
 
 ## Requirements
 

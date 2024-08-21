@@ -136,7 +136,5 @@ spaces.
 =head1 DESCRIPTION
 CharmBoard is forum software written in Perl with Mojolicious,
 intended to be a more fun alternative to the bigger forum suites
-available today, inspired by older forum software like AcmlmBoard,
-while also being more modernized in terms of security practices than
-they are.
+available today, inspired by older forum software like AcmlmBoard.
 =cut
