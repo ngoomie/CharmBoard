@@ -8,6 +8,7 @@ use feature ':5.20';
 
 use Mojo::Base 'Mojolicious', -signatures;
 use CharmBoard::Model::Schema;
+use CharmBoard::Util::Crypt::Seasoning;
 
 # this method will run once at server start
 sub startup {
@@ -64,6 +65,43 @@ sub startup {
 
     $self->helper(schema => sub { $schema })
   }
+
+  # session helpers
+  ## create session
+  $self->helper(session_create => sub {
+    my $self = shift;
+
+    my $_session_key = seasoning(16);
+
+    # create session entry in db
+    $self->schema->resultset('Session')->create({
+      session_key    => $_session_key,
+      user_id        => $_[0],
+      session_expiry => time + 604800,
+      is_ip_bound    => 0,
+      bound_ip       => undef
+    });
+
+    # now create session cookie
+    $self->session(is_auth     => 1            );
+    $self->session(user_id     => $_[0]        );
+    $self->session(session_key => $_session_key);
+    $self->session(expiration  => 604800       );
+  });
+  ## destroy session
+  $self->helper(session_destroy => sub {
+    my $self = shift;
+
+    my $_session_key = $self->session('session_key');
+
+    # destroy entry for this session in the database
+    $self->schema->resultset('Session')
+        ->search({ session_key => $_session_key })
+        ->delete;
+
+    # now nuke the actual session cookie
+    $self->session(expires => 1);
+  });
 
   # router
   my $r = $self->routes;

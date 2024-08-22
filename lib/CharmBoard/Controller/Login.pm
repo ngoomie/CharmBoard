@@ -53,24 +53,7 @@ sub login_do {
                               # get user ID for session creation
     $user_id = $user_info->get_column('user_id')->first;
 
-    # gen session key
-    $session_key = seasoning(16);
-
-    # add session to database
-    $self->schema->resultset('Session')->create({
-      session_key    => $session_key,
-      user_id        => $user_id,
-      session_expiry => time + 604800,
-      is_ip_bound    => 0,
-      bound_ip       => undef
-    })
-        or die;
-
-    # now create session cookie for user
-    $self->session(is_auth     => 1           );
-    $self->session(user_id     => $user_id    );
-    $self->session(session_key => $session_key);
-    $self->session(expiration  => 604800      );
+    $self->session_create($user_id);
 
     # redirect to index upon success
     $self->redirect_to('/')
