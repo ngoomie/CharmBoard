@@ -16,17 +16,16 @@
   "><a href="/board/<%= $_subf_id %>"><%= $_name %></a></div>
 <% end %>
 
-<%
-foreach my $category ($category_tree->getAllChildren) { %>
+% foreach my $category ($category_tree->getAllChildren) {
   <%= $cat_header->(
     $category->getNodeValue,
     $c->schema->resultset('Categories')->
       title_from_id($category->getNodeValue)) %>
-<%
-  foreach my $subforum ($category->getAllChildren) { %>
+
+% foreach my $subforum ($category->getAllChildren) {
     <%= $subf_item->(
       $subforum->getNodeValue,
       $category->getNodeValue,
       $c->schema->resultset('Subforums')->
         title_from_id($subforum->getNodeValue)) %>
-<%  }} %>
+% }}
