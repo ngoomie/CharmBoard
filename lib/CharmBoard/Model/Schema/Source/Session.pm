@@ -4,7 +4,8 @@ use utf8;
 use strict;
 use warnings;
 use experimental qw(try);
-use feature ':5.20';
+no warnings 'experimental::try';
+use feature ':5.34';
 
 use base qw(DBIx::Class::Core);
 
