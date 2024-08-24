@@ -1,6 +1,6 @@
 % layout 'default',
-% title => 'New thread - ' . $self->board_name;
-<a href="/"><%= $self->board_name %></a> » <%= $cat_title %> »
+% title => 'New thread - ' . $c->board_name;
+<a href="/"><%= $c->board_name %></a> » <%= $cat_title %> »
     <%= $subf_title %> » new thread
 <br /><br />
 <form method="post" action="/board/<%= $subf_id %>/new/">

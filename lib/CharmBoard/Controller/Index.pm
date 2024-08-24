@@ -10,15 +10,15 @@ use Mojo::Base 'Mojolicious::Controller', -signatures;
 use Tree::Simple;
 
 sub index {
-  my $self = shift;
+  my $c = shift;
 
-  if ($self->session_verify eq undef) {
-    $self->redirect_to('/')
+  if ($c->session_verify eq undef) {
+    $c->redirect_to('/')
   }
 
-  $self->render(
+  $c->render(
     template      => 'index',
-    category_tree => $self->model('forums')->list_full
+    category_tree => $c->model('forums')->list_full
   )
 }
 

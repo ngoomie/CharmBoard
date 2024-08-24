@@ -10,9 +10,9 @@ use Mojo::Base 'MojoX::Model';
 use Tree::Simple;
 
 sub list_full {
-  my $self = shift;
+  my $c = shift;
   # fetch a list of all categories
-  my @_all_cat = $self->{app}->schema->resultset('Categories')->fetch_all;
+  my @_all_cat = $c->{app}->schema->resultset('Categories')->fetch_all;
 
   # create a Tree::Simple object that will contain the list
   # of categories and the subforums that belong to them
@@ -26,7 +26,7 @@ sub list_full {
 
     # fetch all subforums that belong to this category
     @_fetch_subf =
-        $self->{app}->schema->resultset('Subforums')
+        $c->{app}->schema->resultset('Subforums')
         ->fetch_by_cat($_iter_cat);
 
     # add each fetched subforum as children of the branch

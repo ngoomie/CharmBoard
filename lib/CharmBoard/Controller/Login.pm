@@ -11,19 +11,19 @@ use CharmBoard::Util::Crypt::Password;
 use CharmBoard::Util::Crypt::Seasoning;
 
 sub login {
-  my $self = shift;
+  my $c = shift;
 
-  $self->render(
+  $c->render(
     template => 'login',
-    error    => $self->flash('error'),
-    message  => $self->flash('message')
+    error    => $c->flash('error'),
+    message  => $c->flash('message')
   )
 }
 
 sub login_do {
-  my $self     = shift;
-  my $username = $self->param('username');
-  my $password = $self->pepper . ':' . $self->param('password');
+  my $c     = shift;
+  my $username = $c->param('username');
+  my $password = $c->pepper . ':' . $c->param('password');
 
   my $catch_error;
 
@@ -34,7 +34,7 @@ sub login_do {
   # check user credentials first
   try {
     # check to see if user by entered username exists
-    $user_info = $self->schema->resultset('Users')
+    $user_info = $c->schema->resultset('Users')
         ->search({ username => $username });
     $user_info or die;
 
@@ -45,27 +45,27 @@ sub login_do {
 
   } catch ($catch_error) {    # redirect to login page on fail
     print $catch_error;
-    $self->flash(error => 'Username or password incorrect.');
-    $self->redirect_to('login');
+    $c->flash(error => 'Username or password incorrect.');
+    $c->redirect_to('login');
   }
 
   try {                       # now attempt to create session
                               # get user ID for session creation
     $user_id = $user_info->get_column('user_id')->first;
 
-    $self->session_create($user_id);
+    $c->session_create($user_id);
 
     # redirect to index upon success
-    $self->redirect_to('/')
+    $c->redirect_to('/')
 
   } catch ($catch_error) {    # redirect to login page on fail
     print $catch_error;
-    $self->flash(
+    $c->flash(
       error => 'Your username and password were correct, but a server
           error prevented you from logging in. This has been logged
           so the administrator can fix it.'
     );
-    $self->redirect_to('login')
+    $c->redirect_to('login')
   }
 }
 

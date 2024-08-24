@@ -1,5 +1,5 @@
 % layout 'default',
-% title => $self->board_name;
+% title => $c->board_name;
 
 <% my $cat_header = begin %>
   % my $_cat_id = shift; my $_name = shift;
@@ -21,13 +21,13 @@
 foreach my $category ($category_tree->getAllChildren) { %>
   <%= $cat_header->(
     $category->getNodeValue,
-    $self->schema->resultset('Categories')->
+    $c->schema->resultset('Categories')->
       title_from_id($category->getNodeValue)) %>
 <%
   foreach my $subforum ($category->getAllChildren) { %>
     <%= $subf_item->(
       $subforum->getNodeValue,
       $category->getNodeValue,
-      $self->schema->resultset('Subforums')->
+      $c->schema->resultset('Subforums')->
         title_from_id($subforum->getNodeValue)) %>
 <%  }} %>

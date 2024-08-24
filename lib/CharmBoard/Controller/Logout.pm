@@ -9,12 +9,12 @@ use feature ':5.20';
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 sub logout_do {
-  my $self = shift;
+  my $c = shift;
 
-  $self->session_destroy;
+  $c->session_destroy;
 
   # redirect to index
-  $self->redirect_to('/')
+  $c->redirect_to('/')
 }
 
 1;

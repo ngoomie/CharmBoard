@@ -12,39 +12,39 @@ use CharmBoard::Util::Crypt::Seasoning;
 
 # this method will run once at server start
 sub startup {
-  my $self = shift;
+  my $app = shift;
 
   # load plugins that require no additional conf
-  $self->plugin('TagHelpers');
-  $self->plugin('Model', {namespaces => ['CharmBoard::Model']});
+  $app->plugin('TagHelpers');
+  $app->plugin('Model', {namespaces => ['CharmBoard::Model']});
 
   # load configuration from config file
   my $config =
-      $self->plugin('Config' => { file => 'charmboard.conf' });
+      $app->plugin('Config' => { file => 'charmboard.conf' });
 
   # set this specific forum's name
-  $self->helper(board_name => sub { $config->{board_name} });
+  $app->helper(board_name => sub { $config->{board_name} });
 
   # load dev env only stuff, if applicable
   if (lc($config->{environment}) eq 'dev') {
-    $self->renderer->cache->max_keys(0)
+    $app->renderer->cache->max_keys(0)
   }
 
   # import Mojolicious secrets
-  $self->secrets($config->{secrets});
+  $app->secrets($config->{secrets});
 
   # import password pepper value
-  $self->helper(pepper => sub { $config->{pass_crypt}->{pepper} });
+  $app->helper(pepper => sub { $config->{pass_crypt}->{pepper} });
 
   ## database setup
   # ? this could maybe be a given/when
   {
     my ($_dsn, $_unicode);
-    if (lc($self->config->{database}->{type}) eq 'sqlite') {
+    if (lc($app->config->{database}->{type}) eq 'sqlite') {
       $_dsn     = "dbi:SQLite:" . $config->{database}->{name};
       $_unicode = "sqlite_unicode"
 
-    } elsif (lc($self->config->{database}->{type}) eq 'mariadb') {
+    } elsif (lc($app->config->{database}->{type}) eq 'mariadb') {
       $_dsn     = "dbi:mysql:" . $config->{database}->{name};
       $_unicode = "mysql_enable_utf"
 
@@ -63,18 +63,18 @@ sub startup {
       { $_unicode => 1 }
     );
 
-    $self->helper(schema => sub { $schema })
+    $app->helper(schema => sub { $schema })
   }
 
   # session helpers
   ## create session
-  $self->helper(session_create => sub {
-    my $self = shift;
+  $app->helper(session_create => sub {
+    my $app = shift;
 
     my $_session_key = seasoning(16);
 
     # create session entry in db
-    $self->schema->resultset('Session')->create({
+    $app->schema->resultset('Session')->create({
       session_key    => $_session_key,
       user_id        => $_[0],
       session_expiry => time + 604800,
@@ -83,59 +83,59 @@ sub startup {
     });
 
     # now create session cookie
-    $self->session(is_auth     => 1            );
-    $self->session(user_id     => $_[0]        );
-    $self->session(session_key => $_session_key);
-    $self->session(expiration  => 604800       );
+    $app->session(is_auth     => 1            );
+    $app->session(user_id     => $_[0]        );
+    $app->session(session_key => $_session_key);
+    $app->session(expiration  => 604800       );
   });
   ## destroy session
-  $self->helper(session_destroy => sub {
-    my $self = shift;
+  $app->helper(session_destroy => sub {
+    my $app = shift;
 
-    my $_session_key = $self->session('session_key');
+    my $_session_key = $app->session('session_key');
 
     # destroy entry for this session in the database
-    $self->schema->resultset('Session')
+    $app->schema->resultset('Session')
         ->search({ session_key => $_session_key })
         ->delete;
 
     # now nuke the actual session cookie
-    $self->session(expires => 1);
+    $app->session(expires => 1);
   });
   ## verify session
-  $self->helper(session_verify => sub {
-    my $self = shift;
+  $app->helper(session_verify => sub {
+    my $app = shift;
 
     my $_validity = 1;
     my $_catch_error;
 
     # get info from user's session cookie and store it in vars
-    my $_user_id = $self->session('user_id');
-    my $_session_key = $self->session('session_key');
-    my $_is_auth = $self->session('is_auth');
+    my $_user_id = $app->session('user_id');
+    my $_session_key = $app->session('session_key');
+    my $_is_auth = $app->session('is_auth');
 
     if ($_is_auth) {
       try {
         # check to see if session with this id is present in db
-        ($self->schema->resultset('Session')->search
+        ($app->schema->resultset('Session')->search
           ({ 'session_key' => $_session_key })
           ->get_column('session_key')->first)
               or die;
 
         # check to see if the current session key's user id matches
         # that of the user id in the database
-        $_user_id == ($self->schema->resultset('Session')->
+        $_user_id == ($app->schema->resultset('Session')->
           session_uid($_session_key))
             or die;
         
         # check if session is still within valid time as recorded in
         # the db
-        time < ($self->schema->resultset('Session')->
+        time < ($app->schema->resultset('Session')->
           session_expiry($_session_key))
               or die;
       } catch ($_catch_error) {
         $_validity = undef;
-        $self->session_destroy;
+        $app->session_destroy;
       }
     } else {
       $_validity = 0;
@@ -145,7 +145,7 @@ sub startup {
   });
 
   # router
-  my $r = $self->routes;
+  my $r = $app->routes;
 
   # controller routes
   ## index page

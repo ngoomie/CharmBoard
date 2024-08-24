@@ -11,22 +11,22 @@ use CharmBoard::Util::Crypt::Password;
 
 # initial registration page
 sub register {
-  my $self = shift;
-  $self->render(
+  my $c = shift;
+  $c->render(
     template => 'register',
-    error    => $self->flash('error'),
-    message  => $self->flash('message')
+    error    => $c->flash('error'),
+    message  => $c->flash('message')
   )
 }
 
 # process submitted registration form
 sub register_do {
-  my $self = shift;
+  my $c = shift;
 
-  my $username         = $self->param('username');
-  my $email            = $self->param('email');
-  my $password         = $self->param('password');
-  my $confirm_password = $self->param('confirm-password');
+  my $username         = $c->param('username');
+  my $email            = $c->param('email');
+  my $password         = $c->param('password');
+  my $confirm_password = $c->param('confirm-password');
 
   my $catch_error;
 
@@ -50,9 +50,9 @@ sub register_do {
     # check to make sure username and/or email isn't already in use;
     # if not, continue with registration
     ## search for input username and email in database
-    $user_check = $self->schema->resultset('Users')
+    $user_check = $c->schema->resultset('Users')
         ->search({ username => $username })->single;
-    $email_check = $self->schema->resultset('Users')
+    $email_check = $c->schema->resultset('Users')
         ->search({ email => $email })->single;
 
     # TODO: compress this into something less redundant
@@ -63,18 +63,18 @@ sub register_do {
     ($email_check) eq undef
         or die "email already in use."
   } catch ($catch_error) {
-    $self->flash(error => $catch_error);
-    $self->redirect_to('register')
+    $c->flash(error => $catch_error);
+    $c->redirect_to('register')
   }
 
   try {
-    $password = $self->pepper . ':' . $password;
+    $password = $c->pepper . ':' . $password;
 
     # return hashed result + salt
     ($salt, $hash) = passgen($password) or die;
 
     # add user info and pw/salt to DB
-    $self->schema->resultset('Users')->create({
+    $c->schema->resultset('Users')->create({
       username    => $username,
       email       => $email,
       password    => $hash,
@@ -83,17 +83,17 @@ sub register_do {
     })
         or die;
 
-    $self->flash(message => 'User registered successfully!');
-    $self->redirect_to('register')
+    $c->flash(message => 'User registered successfully!');
+    $c->redirect_to('register')
   } catch ($catch_error) {
     print $catch_error;
-    $self->flash(
+    $c->flash(
       error =>
         'Your registration info was correct, but a server error
          prevented you from registering. This has been logged so the
          administrator can fix it.'
     );
-    $self->redirect_to('register')
+    $c->redirect_to('register')
   }
 }
 

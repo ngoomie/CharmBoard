@@ -9,18 +9,18 @@ use feature ':5.20';
 use base 'DBIx::Class::ResultSet';
 
 sub fetch_all {
-  my $_set = shift;
+  my $set = shift;
 
-  my $_fetch = $_set->search({}, { order_by => 'cat_rank' });
+  my $_fetch = $set->search({}, { order_by => 'cat_rank' });
 
   return ($_fetch->get_column('cat_id')->all)
 }
 
 sub title_from_id {
-  my $_set = shift;
+  my $set = shift;
 
   return (
-    $_set->search({ 'cat_id' => $_[0] })->get_column('cat_name')
+    $set->search({ 'cat_id' => $_[0] })->get_column('cat_name')
         ->first)
 }
 

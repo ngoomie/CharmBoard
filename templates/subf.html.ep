@@ -1,5 +1,5 @@
 % layout 'default',
-% title => $subf_title . ' - ' . $self->board_name;
+% title => $subf_title . ' - ' . $c->board_name;
 % my @thread_list = @{stash('thread_list')};
 
 <% my $thread_item = begin %>
@@ -9,7 +9,7 @@
 </div>
 <% end %>
 
-<a href="/"><%= $self->board_name %></a> » <%= $cat_title %> »
+<a href="/"><%= $c->board_name %></a> » <%= $cat_title %> »
     <%= $subf_title %>
 <br /><br />
 
@@ -20,6 +20,6 @@ like to <a href="<%= $subf_id %>/new/">make one?</a>
   foreach my $thread_id (@thread_list) { %>
 <%= $thread_item->(
     $thread_id,
-    $self->schema->resultset('Threads')->
+    $c->schema->resultset('Threads')->
         title_from_id($thread_id)) %>
 <% }} %>
