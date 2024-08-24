@@ -1,11 +1,5 @@
 % layout 'default',
 % title => $c->board_name . ' - Registration';
-% if ($error) {
-<p style="color: red"><%= $error %></p>
-%};
-% if ($message) {
-<p style="color: blue"><%= $message %></p>
-%};
 <p>fields marked with <span style="color: red">*</span> are required</p>
 <form method="post" action='/register'>
   username: <input

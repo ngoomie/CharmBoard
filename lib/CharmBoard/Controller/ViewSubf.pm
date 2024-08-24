@@ -27,7 +27,9 @@ sub subf_view {
     cat_title  => $cat_title,
     subf_title =>
         $c->schema->resultset('Subforums')->title_from_id($subf_id),
-    thread_list => \@thread_list
+    thread_list => \@thread_list,
+    error   => $c->flash('error'),
+    message => $c->flash('message')
   )
 }
 

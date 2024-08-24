@@ -1,11 +1,5 @@
 % layout 'default',
 % title => $c->board_name . ' - Login';
-% if ($error) {
-<p style="color: red"><%= $error %></p>
-%};
-% if ($message) {
-<p style="color: blue"><%= $message %></p>
-%};
 <form method="post" action='/login'>
   username: <input
     id="username"

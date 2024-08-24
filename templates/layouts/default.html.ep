@@ -6,6 +6,7 @@
   </head>
   <body>
     %= include 'layouts/default/_header'
+    %= include 'items/_err_msg'
     <%= content %>
     %= include 'layouts/default/_footer'
   </body>

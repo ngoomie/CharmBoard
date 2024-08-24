@@ -19,7 +19,9 @@ sub index {
 
   $c->render(
     template      => 'index',
-    category_tree => $c->model('forums')->list_full
+    category_tree => $c->model('forums')->list_full,
+    error   => $c->flash('error'),
+    message => $c->flash('message')
   )
 }
 
