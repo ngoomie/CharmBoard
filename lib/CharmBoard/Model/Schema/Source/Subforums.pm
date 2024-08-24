@@ -11,8 +11,10 @@ use base qw(DBIx::Class::Core);
 __PACKAGE__->table('subforums');
 __PACKAGE__->add_columns(
   subf_id   =>
-  {     data_type         => 'text',
+  {     data_type         => 'integer',
+        is_numeric        => 1,
         is_nullable       => 0,
+        is_auto_increment => 1
   },
   subf_cat  =>
   {     data_type         => 'integer',

@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on Mon. Aug. 19 01:39:05 2024
+-- File generated with SQLiteStudio v3.4.4 on Fri. Aug. 23 23:32:02 2024
 --
 -- Text encoding used: UTF-8
 --
@@ -7,16 +7,41 @@ PRAGMA foreign_keys = off;
 BEGIN TRANSACTION;
 
 -- Table: categories
-DROP TABLE IF EXISTS categories;
-CREATE TABLE categories (cat_id INTEGER NOT NULL ON CONFLICT ROLLBACK UNIQUE ON CONFLICT ROLLBACK, cat_rank INTEGER NOT NULL, cat_name TEXT, PRIMARY KEY (cat_id));
+CREATE TABLE IF NOT EXISTS categories (
+    cat_id   INTEGER NOT NULL ON CONFLICT ROLLBACK
+                     UNIQUE ON CONFLICT ROLLBACK,
+    cat_rank INTEGER NOT NULL,
+    cat_name TEXT,
+    PRIMARY KEY (
+        cat_id
+    )
+);
+
 
 -- Table: posts
-DROP TABLE IF EXISTS posts;
-CREATE TABLE posts (post_id INTEGER NOT NULL ON CONFLICT ROLLBACK UNIQUE ON CONFLICT ROLLBACK, user_id INTEGER NOT NULL ON CONFLICT ROLLBACK, thread_id INTEGER NOT NULL ON CONFLICT ROLLBACK, post_date INTEGER NOT NULL ON CONFLICT ROLLBACK, post_body TEXT NOT NULL, PRIMARY KEY (post_id AUTOINCREMENT), FOREIGN KEY (user_id) REFERENCES users (user_id), FOREIGN KEY (thread_id) REFERENCES threads (thread_id));
+CREATE TABLE IF NOT EXISTS posts (
+    post_id   INTEGER NOT NULL ON CONFLICT ROLLBACK
+                      UNIQUE ON CONFLICT ROLLBACK,
+    user_id   INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    thread_id INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    post_date INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    post_body TEXT    NOT NULL,
+    PRIMARY KEY (
+        post_id AUTOINCREMENT
+    ),
+    FOREIGN KEY (
+        user_id
+    )
+    REFERENCES users (user_id),
+    FOREIGN KEY (
+        thread_id
+    )
+    REFERENCES threads (thread_id) 
+);
+
 
 -- Table: sessions
-DROP TABLE IF EXISTS sessions;
-CREATE TABLE sessions (
+CREATE TABLE IF NOT EXISTS sessions (
     session_key    TEXT           NOT NULL
                                   UNIQUE
                                   PRIMARY KEY,
@@ -28,17 +53,34 @@ CREATE TABLE sessions (
     bound_ip       TEXT
 );
 
+
 -- Table: subforums
-DROP TABLE IF EXISTS subforums;
-CREATE TABLE subforums (subf_id TEXT (1, 5) PRIMARY KEY UNIQUE ON CONFLICT ROLLBACK NOT NULL ON CONFLICT ROLLBACK, subf_cat INTEGER REFERENCES categories (cat_id) NOT NULL, subf_rank INTEGER NOT NULL, subf_name TEXT NOT NULL ON CONFLICT ROLLBACK, subf_desc TEXT);
+CREATE TABLE IF NOT EXISTS subforums (
+    subf_id   INTEGER,
+    subf_cat  INTEGER,
+    subf_rank INTEGER,
+    subf_name TEXT,
+    subf_desc TEXT,
+    PRIMARY KEY (
+        subf_id AUTOINCREMENT
+    )
+);
+
 
 -- Table: threads
-DROP TABLE IF EXISTS threads;
-CREATE TABLE threads (thread_id INTEGER NOT NULL ON CONFLICT ROLLBACK, thread_title TEXT NOT NULL ON CONFLICT ROLLBACK, thread_subf TEXT (1, 5) REFERENCES categories (cat_id), PRIMARY KEY (thread_id AUTOINCREMENT));
+CREATE TABLE IF NOT EXISTS threads (
+    thread_id    INTEGER NOT NULL ON CONFLICT ROLLBACK,
+    thread_title TEXT    NOT NULL ON CONFLICT ROLLBACK,
+    thread_subf  INTEGER NOT NULL
+                         REFERENCES categories (cat_id),
+    PRIMARY KEY (
+        thread_id AUTOINCREMENT
+    )
+);
+
 
 -- Table: users
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id     INTEGER NOT NULL ON CONFLICT ROLLBACK
                         UNIQUE ON CONFLICT ROLLBACK,
     username    TEXT    NOT NULL ON CONFLICT ROLLBACK
@@ -53,6 +95,7 @@ CREATE TABLE users (
     )
     ON CONFLICT ABORT
 );
+
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
