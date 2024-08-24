@@ -4,7 +4,7 @@ charmboard.conf
 # SQLite
 *.db
 *.db-*
-*.db.old
+*.db.*
 
 # Perl::Critic
 perlcritic.log
@@ -12,8 +12,7 @@ perlcritic.log
 # Perl::Tidy
 perltidy.log
 *.tdy
-*.pm.LOG
-*.pl.LOG
+*.LOG
 
-# htmx
-public/htmx.*.js
+# miscellany
+*.old
