@@ -14,7 +14,7 @@
       id="post-content"
       name="post-content"
       cols="50" rows="5"
-      placeholder="post content">
-  </textarea><br /><br />
+      placeholder="post content"></textarea>
+  <br /><br />
   <input type="submit" value="post!" />
 </form>
