@@ -13,6 +13,7 @@ __PACKAGE__->table('threads');
 __PACKAGE__->add_columns(
   thread_id    =>
   {     data_type         => 'integer',
+        is_numeric        => 1,
         is_auto_increment => 1,
         is_nullable       => 0,
   },

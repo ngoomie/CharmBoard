@@ -29,6 +29,11 @@ __PACKAGE__->add_columns(
   post_date =>
   {     data_type         => 'integer',
         is_nullable       => 0,
+  },
+  post_body =>
+  {
+       data_type          => 'text',
+       is_nullable        => 0
   }
 );
 
