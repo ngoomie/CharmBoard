@@ -1,33 +1,4 @@
 % layout 'default',
 % title => $c->board_name;
 
-<% my $cat_header = begin %>
-  % my $_cat_id = shift; my $_name = shift;
-  <div class="category-header category-<%= $_cat_id %>">
-    <b><%= $_name %></b>
-  </div>
-<% end %>
-
-<% my $subf_item = begin %>
-  % my $_subf_id = shift; my $_cat_id = shift;
-  % my $_name = shift;
-  <div class="
-    subforum-item subforum-<%= $_subf_id %>
-    category-<%= $_cat_id %>
-  "><a href="/board/<%= $_subf_id %>"><%= $_name %></a></div>
-<% end %>
-
-<%
-foreach my $category ($category_tree->getAllChildren) { %>
-  <%= $cat_header->(
-    $category->getNodeValue,
-    $c->schema->resultset('Categories')->
-      title_from_id($category->getNodeValue)) %>
-<%
-  foreach my $subforum ($category->getAllChildren) { %>
-    <%= $subf_item->(
-      $subforum->getNodeValue,
-      $category->getNodeValue,
-      $c->schema->resultset('Subforums')->
-        title_from_id($subforum->getNodeValue)) %>
-<%  }} %>
+%= include 'items/_list_subf_cat'
