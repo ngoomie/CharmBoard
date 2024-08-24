@@ -53,8 +53,9 @@ sub register_do {
     ## search for input username and email in database
     $user_check = $c->schema->resultset('Users')
         ->search({ username => $username })->single;
-    $email_check = $c->schema->resultset('Users')
-        ->search({ email => $email })->single;
+    $email_check =
+        $c->schema->resultset('Users')->search({ email => $email })
+        ->single;
 
     # TODO: compress this into something less redundant
     ($user_check && $email_check) eq undef
@@ -90,7 +91,7 @@ sub register_do {
     print $catch_error;
     $c->flash(
       error =>
-        'Your registration info was correct, but a server error
+          'Your registration info was correct, but a server error
          prevented you from registering. This has been logged so the
          administrator can fix it.'
     );

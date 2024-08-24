@@ -22,7 +22,7 @@ sub login {
 }
 
 sub login_do {
-  my $c     = shift;
+  my $c        = shift;
   my $username = $c->param('username');
   my $password = $c->pepper . ':' . $c->param('password');
 
@@ -62,7 +62,8 @@ sub login_do {
   } catch ($catch_error) {    # redirect to login page on fail
     print $catch_error;
     $c->flash(
-      error => 'Your username and password were correct, but a server
+      error =>
+          'Your username and password were correct, but a server
           error prevented you from logging in. This has been logged
           so the administrator can fix it.'
     );

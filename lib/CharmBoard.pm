@@ -17,7 +17,7 @@ sub startup {
 
   # load plugins that require no additional conf
   $app->plugin('TagHelpers');
-  $app->plugin('Model', {namespaces => ['CharmBoard::Model']});
+  $app->plugin('Model', { namespaces => ['CharmBoard::Model'] });
 
   # load configuration from config file
   my $config =
@@ -69,81 +69,86 @@ sub startup {
 
   # session helpers
   ## create session
-  $app->helper(session_create => sub {
-    my $app = shift;
+  $app->helper(
+    session_create => sub {
+      my $app = shift;
 
-    my $_session_key = seasoning(16);
+      my $_session_key = seasoning(16);
 
-    # create session entry in db
-    $app->schema->resultset('Session')->create({
-      session_key    => $_session_key,
-      user_id        => $_[0],
-      session_expiry => time + 604800,
-      is_ip_bound    => 0,
-      bound_ip       => undef
-    });
+      # create session entry in db
+      $app->schema->resultset('Session')->create({
+        session_key    => $_session_key,
+        user_id        => $_[0],
+        session_expiry => time + 604800,
+        is_ip_bound    => 0,
+        bound_ip       => undef
+      });
 
-    # now create session cookie
-    $app->session(is_auth     => 1            );
-    $app->session(user_id     => $_[0]        );
-    $app->session(session_key => $_session_key);
-    $app->session(expiration  => 604800       );
-  });
-  ## destroy session
-  $app->helper(session_destroy => sub {
-    my $app = shift;
-
-    my $_session_key = $app->session('session_key');
-
-    # destroy entry for this session in the database
-    $app->schema->resultset('Session')
-        ->search({ session_key => $_session_key })
-        ->delete;
-
-    # now nuke the actual session cookie
-    $app->session(expires => 1);
-  });
-  ## verify session
-  $app->helper(session_verify => sub {
-    my $app = shift;
-
-    my $_validity = 1;
-    my $_catch_error;
-
-    # get info from user's session cookie and store it in vars
-    my $_user_id = $app->session('user_id');
-    my $_session_key = $app->session('session_key');
-    my $_is_auth = $app->session('is_auth');
-
-    if ($_is_auth) {
-      try {
-        # check to see if session with this id is present in db
-        ($app->schema->resultset('Session')->search
-          ({ 'session_key' => $_session_key })
-          ->get_column('session_key')->first)
-              or die;
-
-        # check to see if the current session key's user id matches
-        # that of the user id in the database
-        $_user_id == ($app->schema->resultset('Session')->
-          session_uid($_session_key))
-            or die;
-        
-        # check if session is still within valid time as recorded in
-        # the db
-        time < ($app->schema->resultset('Session')->
-          session_expiry($_session_key))
-              or die;
-      } catch ($_catch_error) {
-        $_validity = undef;
-        $app->session_destroy;
-      }
-    } else {
-      $_validity = 0;
+      # now create session cookie
+      $app->session(is_auth     => 1);
+      $app->session(user_id     => $_[0]);
+      $app->session(session_key => $_session_key);
+      $app->session(expiration  => 604800);
     }
+  );
+  ## destroy session
+  $app->helper(
+    session_destroy => sub {
+      my $app = shift;
 
-    return $_validity;
-  });
+      my $_session_key = $app->session('session_key');
+
+      # destroy entry for this session in the database
+      $app->schema->resultset('Session')
+          ->search({ session_key => $_session_key })->delete;
+
+      # now nuke the actual session cookie
+      $app->session(expires => 1);
+    }
+  );
+  ## verify session
+  $app->helper(
+    session_verify => sub {
+      my $app = shift;
+
+      my $_validity = 1;
+      my $_catch_error;
+
+      # get info from user's session cookie and store it in vars
+      my $_user_id     = $app->session('user_id');
+      my $_session_key = $app->session('session_key');
+      my $_is_auth     = $app->session('is_auth');
+
+      if ($_is_auth) {
+        try {
+          # check to see if session with this id is present in db
+          ($app->schema->resultset('Session')
+                ->search({ 'session_key' => $_session_key })
+                ->get_column('session_key')->first)
+              or die;
+
+          # check to see if the current session key's user id matches
+          # that of the user id in the database
+          $_user_id == ($app->schema->resultset('Session')
+                ->session_uid($_session_key))
+              or die;
+
+          # check if session is still within valid time as recorded in
+          # the db
+          time < ($app->schema->resultset('Session')
+                ->session_expiry($_session_key))
+              or die;
+        } catch ($_catch_error) {
+          $_validity = undef;
+          $app->session_destroy;
+        }
+      } else {
+        $_validity = 0;
+      }
+
+      return $_validity;
+    }
+  );
 
   # router
   my $r = $app->routes;

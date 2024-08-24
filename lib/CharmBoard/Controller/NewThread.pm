@@ -16,17 +16,16 @@ sub thread_compose {
   my $subf_cat =
       $c->schema->resultset('Subforums')->cat_from_id($subf_id);
   my $cat_title =
-      $c->schema->resultset('Categories')
-      ->title_from_id($subf_cat);
+      $c->schema->resultset('Categories')->title_from_id($subf_cat);
 
   $c->render(
-      template   => 'thread_compose',
-      subf_id    => $subf_id,
-      cat_title  => $cat_title,
-      subf_title => $c->schema->resultset('Subforums')
-        ->title_from_id($subf_id),
-      error      => $c->flash('error'),
-      message    => $c->flash('message')
+    template   => 'thread_compose',
+    subf_id    => $subf_id,
+    cat_title  => $cat_title,
+    subf_title =>
+        $c->schema->resultset('Subforums')->title_from_id($subf_id),
+    error   => $c->flash('error'),
+    message => $c->flash('message')
   )
 }
 
@@ -36,7 +35,7 @@ sub thread_submit {
   my $thread_title = $c->param('thread-title');
   my $post_content = $c->param('post-content');
   my $post_time    = time;
-  my $subf_id = $c->param('id');
+  my $subf_id      = $c->param('id');
 
   my $catch_error;
 
@@ -50,7 +49,7 @@ sub thread_submit {
   }
 
   # now send it
-  
+
 }
 
 1;

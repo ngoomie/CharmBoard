@@ -12,8 +12,10 @@ use Tree::Simple;
 
 sub list_full {
   my $c = shift;
+
   # fetch a list of all categories
-  my @_all_cat = $c->{app}->schema->resultset('Categories')->fetch_all;
+  my @_all_cat =
+      $c->{app}->schema->resultset('Categories')->fetch_all;
 
   # create a Tree::Simple object that will contain the list
   # of categories and the subforums that belong to them
