@@ -106,36 +106,41 @@ sub startup {
   $self->helper(session_verify => sub {
     my $self = shift;
 
-    # get info from user's session cookie and store it in vars
-    my $_user_id = $self->session('user_id');
-    my $_session_key = $self->session('session_key');
-
     my $_validity = 1;
     my $_catch_error;
 
-    try {
-      # check to see if session with this id is present in db
-      ($self->schema->resultset('Session')->search
-        ({ 'session_key' => $_session_key })
-        ->get_column('session_key')->first)
-            or die;
+    # get info from user's session cookie and store it in vars
+    my $_user_id = $self->session('user_id');
+    my $_session_key = $self->session('session_key');
+    my $_is_auth = $self->session('is_auth');
 
-      # check to see if the current session key's user id matches
-      # that of the user id in the database
-      $_user_id == ($self->schema->resultset('Session')->
-        session_uid($_session_key))
-           or die;
-      
-      # check if session is still within valid time as recorded in
-      # the db
-      time < ($self->schema->resultset('Session')->
-        session_expiry($_session_key))
+    if ($_is_auth) {
+      try {
+        # check to see if session with this id is present in db
+        ($self->schema->resultset('Session')->search
+          ({ 'session_key' => $_session_key })
+          ->get_column('session_key')->first)
+              or die;
+
+        # check to see if the current session key's user id matches
+        # that of the user id in the database
+        $_user_id == ($self->schema->resultset('Session')->
+          session_uid($_session_key))
             or die;
-    } catch ($_catch_error) {
-      $_validity = undef;
-      $self->session_destroy;
+        
+        # check if session is still within valid time as recorded in
+        # the db
+        time < ($self->schema->resultset('Session')->
+          session_expiry($_session_key))
+              or die;
+      } catch ($_catch_error) {
+        $_validity = undef;
+        $self->session_destroy;
+      }
+    } else {
+      $_validity = 0;
     }
-    
+
     return $_validity;
   });
 

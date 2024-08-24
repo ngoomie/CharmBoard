@@ -12,6 +12,10 @@ use Tree::Simple;
 sub index {
   my $self = shift;
 
+  if ($self->session_verify eq undef) {
+    $self->redirect_to('/')
+  }
+
   $self->render(
     template      => 'index',
     category_tree => $self->model('forums')->list_full

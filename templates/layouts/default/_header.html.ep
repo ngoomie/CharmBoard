@@ -2,8 +2,8 @@
 my $userControls;
 
 # TODO: once implemented, put username + profile link first
-if ($self->session('is_auth') == 1) {
-  my $username =
+if ($self->session('is_auth')) {
+  my $username = '';
   $userControls = "<a href=\"/logout\">logout</a>"}
 else {
     $userControls =
